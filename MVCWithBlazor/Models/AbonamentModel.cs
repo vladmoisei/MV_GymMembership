@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BoxMembershipApp.Models
+namespace MVCWithBlazor.Models
 {
     public class AbonamentModel
     {

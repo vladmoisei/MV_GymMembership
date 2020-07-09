@@ -1,7 +1,6 @@
-﻿using BoxMembershipApp.Models;
+﻿using MVCWithBlazor.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MVCWithBlazor.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

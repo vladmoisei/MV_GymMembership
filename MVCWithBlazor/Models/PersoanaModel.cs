@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BoxMembershipApp.Models
+namespace MVCWithBlazor.Models
 {
     public class PersoanaModel
     {
@@ -40,5 +41,7 @@ namespace BoxMembershipApp.Models
         [Display(Name = "Acord GDPR")]
         [Required(ErrorMessage = "Acest camp este obligatoriu.")]
         public bool IsAcordGDPR { get; set; }
+        [NotMapped]
+        public virtual List<AntrenamentModel> ListaAntrenamente { get; set; }
     }
 }

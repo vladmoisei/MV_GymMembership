@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BoxMembershipApp.Models
+namespace MVCWithBlazor.Models
 {
     public class AntrenamentModel
     {
@@ -31,5 +32,8 @@ namespace BoxMembershipApp.Models
         [Range(0, 20, ErrorMessage = "Nu pot fi mai mult de 20 grupe.")]
         [Required(ErrorMessage = "Grupa este obligatorie.")]
         public int Grupa { get; set; }
+
+        [NotMapped]
+        public virtual List<PersoanaModel> ListaPersoane { get; set; }
     }
 }
