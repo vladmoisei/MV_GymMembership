@@ -19,7 +19,15 @@ namespace MVCWithBlazor.Models
         [Required(ErrorMessage = "Prenume este obligatoriu. ")]
         [StringLength(50, ErrorMessage = "Nu poate depasi 50 de caractere. ")]
         public string Prenume { get; set; }
-
+        
+        [Display(Name = "Nume complet")]
+        public string NumeComplet
+        {
+            get
+            {
+                return Prenume + " " + Nume;
+            }
+        }
         [Display(Name = "Adresa Email")]
         [Required(ErrorMessage = "Email este obligatoriu.")]
         [EmailAddress(ErrorMessage = "Adresa de email invalida.")]
@@ -41,6 +49,7 @@ namespace MVCWithBlazor.Models
         [Display(Name = "Acord GDPR")]
         [Required(ErrorMessage = "Acest camp este obligatoriu.")]
         public bool IsAcordGDPR { get; set; }
+
         [NotMapped]
         public virtual List<AntrenamentModel> ListaAntrenamente { get; set; }
     }

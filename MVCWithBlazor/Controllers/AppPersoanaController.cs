@@ -58,6 +58,12 @@ namespace MVCWithBlazor.Controllers
         {
             if (ModelState.IsValid)
             {
+                PersoanaModel isRegistredPers = _context.PersoanaModels.FirstOrDefault(pers => pers.Email == persoanaModel.Email);
+                if ( isRegistredPers != null)
+                {
+                    ModelState.AddModelError($"User:", $"Email inregistrat pe numele {isRegistredPers.NumeComplet}");
+                    return View(persoanaModel);
+                }
                 _context.Add(persoanaModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

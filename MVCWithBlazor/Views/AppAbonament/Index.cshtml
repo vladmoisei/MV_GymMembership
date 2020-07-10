@@ -1,0 +1,59 @@
+﻿@model IEnumerable<MVCWithBlazor.Models.AbonamentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DataStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataStop)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StareAbonament)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrSedinteEfectuate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersoanaModel.NumeComplet)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr class=@(item.StareAbonament == StareAbonament.Finalizat?"bgnd_red":item.StareAbonament == StareAbonament.Extins?"bgnd_yellow":"")>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataStop)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StareAbonament)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrSedinteEfectuate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersoanaModel.NumeComplet)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AbonamentModelID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AbonamentModelID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AbonamentModelID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
