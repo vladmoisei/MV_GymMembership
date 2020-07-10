@@ -1,0 +1,53 @@
+﻿@model IEnumerable<MVCWithBlazor.Models.TipAbonamentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Denumire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrTotalSedinte)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPersonalTraining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pret)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Denumire)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrTotalSedinte)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPersonalTraining)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pret)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TipAbonamentModelID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TipAbonamentModelID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TipAbonamentModelID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

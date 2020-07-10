@@ -1,0 +1,45 @@
+﻿@model MVCWithBlazor.Models.TipAbonamentModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Stergere</h1>
+
+<h3>Esti sigur ca doresti sa stergi acest tip de abonament?</h3>
+<div>
+    <h4>Tip Abonament</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Denumire)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Denumire)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NrTotalSedinte)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NrTotalSedinte)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsPersonalTraining)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsPersonalTraining)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Pret)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Pret)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TipAbonamentModelID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
