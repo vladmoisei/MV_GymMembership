@@ -6,8 +6,29 @@
 
 <h1>Index</h1>
 
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" asp-action="Index">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group col-md-5">
+                <label class="control-label m-md-2">Selectie luna start abonament:</label>
+                <input class="form-control" type="month" id="startMonth" name="startMonth"
+                       min="2018-01" value=@ViewBag.DataStart>
+            </div>
+            <div class="form-group col-md-5">
+                <label class="control-label m-md-2">Selectie tip abonament:</label>
+                <select class="form-control" id="stareAb" name="stareAb" asp-items="Html.GetEnumSelectList<StareAbonament>()">
+                    <option value="Toate">Toate</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="submit" value="Afiseaza" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Creaza abonament nou</a>
 </p>
 <table class="table">
     <thead>
@@ -25,35 +46,42 @@
                 @Html.DisplayNameFor(model => model.NrSedinteEfectuate)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TipAbonament.Denumire)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PersoanaModel.NumeComplet)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr class=@(item.StareAbonament == StareAbonament.Finalizat?"bgnd_red":item.StareAbonament == StareAbonament.Extins?"bgnd_yellow":"")>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataStop)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StareAbonament)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NrSedinteEfectuate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PersoanaModel.NumeComplet)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AbonamentModelID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AbonamentModelID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AbonamentModelID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataStop)
+                </td>
+                <td class=@(item.StareAbonament == StareAbonament.Finalizat?"bgnd_red":item.StareAbonament == StareAbonament.Extins?"bgnd_yellow":"")>
+                    @Html.DisplayFor(modelItem => item.StareAbonament)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrSedinteEfectuate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipAbonament.Denumire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersoanaModel.NumeComplet)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AbonamentModelID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AbonamentModelID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AbonamentModelID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

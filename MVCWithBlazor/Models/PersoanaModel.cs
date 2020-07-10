@@ -20,7 +20,7 @@ namespace MVCWithBlazor.Models
         [StringLength(50, ErrorMessage = "Nu poate depasi 50 de caractere. ")]
         public string Prenume { get; set; }
         
-        [Display(Name = "Nume complet")]
+        [Display(Name = "Nume Persoana")]
         public string NumeComplet
         {
             get

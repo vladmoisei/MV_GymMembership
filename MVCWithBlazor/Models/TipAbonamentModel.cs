@@ -10,6 +10,7 @@ namespace MVCWithBlazor.Models
     {
         public int TipAbonamentModelID { get; set; }
 
+        [Display(Name = "Tip Abonament")]
         [Required(ErrorMessage = "Denumire este obligatorie.")]
         [StringLength(100, ErrorMessage = "Nu poate depasi 100 de caractere. ")]
         public string Denumire { get; set; }

@@ -22,7 +22,8 @@ namespace MVCWithBlazor.Controllers
         // GET: AppAbonament
         public async Task<IActionResult> Index()
         {
-            var reportDbContext = _context.AbonamentModels.Include(a => a.PersoanaModel);
+            ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
+            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel);
             return View(await reportDbContext.ToListAsync());
         }
 
@@ -35,6 +36,7 @@ namespace MVCWithBlazor.Controllers
             }
 
             var abonamentModel = await _context.AbonamentModels
+                .Include(t => t.TipAbonament)
                 .Include(a => a.PersoanaModel)
                 .FirstOrDefaultAsync(m => m.AbonamentModelID == id);
             if (abonamentModel == null)
@@ -48,6 +50,7 @@ namespace MVCWithBlazor.Controllers
         // GET: AppAbonament/Create
         public IActionResult Create()
         {
+            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire");
             ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet");
             return View();
         }
@@ -57,17 +60,37 @@ namespace MVCWithBlazor.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AbonamentModelID,DataStart,PersoanaModelID")] AbonamentModel abonamentModel)
+        public async Task<IActionResult> Create([Bind("AbonamentModelID,DataStart,TipAbonamentModelID,PersoanaModelID")] AbonamentModel abonamentModel)
         {
             if (ModelState.IsValid)
             {
+                TipAbonamentModel tipAb = _context.TipAbonamentModels.FirstOrDefault(a => a.TipAbonamentModelID == abonamentModel.TipAbonamentModelID);
                 abonamentModel.DataStop = new DateTime(abonamentModel.DataStart.Year, abonamentModel.DataStart.Month + 1, abonamentModel.DataStart.Day);
                 abonamentModel.StareAbonament = StareAbonament.Activ;
                 abonamentModel.NrSedinteEfectuate = 0;
+                if (tipAb.NrTotalSedinte == 1) // Daca facem 1 abonament cu o singura sedinta il incheiem pe loc, nu mai e nevoie
+                    // sa il incheiem din antrenament
+                {
+                    abonamentModel.DataStop = abonamentModel.DataStart;
+                    abonamentModel.StareAbonament = StareAbonament.Finalizat;
+                    abonamentModel.NrSedinteEfectuate = 1;
+                }
+                // Daca persoana nu are atrenament Finalizat nu putem sa o adaugam pe un alt abonament
+                AbonamentModel isAbExpiredPers = _context.AbonamentModels.Include(p => p.PersoanaModel)
+                    .Include(t => t.TipAbonament)
+                    .FirstOrDefault(ab => ab.PersoanaModelID == abonamentModel.PersoanaModelID);
+                if (isAbExpiredPers != null)
+                    if (isAbExpiredPers.StareAbonament == StareAbonament.Activ || isAbExpiredPers.StareAbonament == StareAbonament.Extins)
+                    {
+                        ModelState.AddModelError($"User:", $"Persoana are abonament: {isAbExpiredPers.StareAbonament} si expira pe: " +
+                            isAbExpiredPers.DataStop.ToString("dd.MM.yyyy"));
+                        return View(abonamentModel);
+                    }
                 _context.Add(abonamentModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire", abonamentModel.TipAbonamentModelID);
             ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet", abonamentModel.PersoanaModelID);
             return View(abonamentModel);
         }
@@ -85,6 +108,7 @@ namespace MVCWithBlazor.Controllers
             {
                 return NotFound();
             }
+            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire", abonamentModel.TipAbonamentModelID);
             ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet", abonamentModel.PersoanaModelID);
             return View(abonamentModel);
         }
@@ -94,7 +118,7 @@ namespace MVCWithBlazor.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AbonamentModelID,DataStart,DataStop,StareAbonament,NrSedinteEfectuate,PersoanaModelID")] AbonamentModel abonamentModel)
+        public async Task<IActionResult> Edit(int id, [Bind("AbonamentModelID,DataStart,DataStop,StareAbonament,NrSedinteEfectuate,TipAbonamentModelID,PersoanaModelID")] AbonamentModel abonamentModel)
         {
             if (id != abonamentModel.AbonamentModelID)
             {
@@ -121,6 +145,7 @@ namespace MVCWithBlazor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire", abonamentModel.TipAbonamentModelID);
             ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet", abonamentModel.PersoanaModelID);
             return View(abonamentModel);
         }
@@ -134,6 +159,7 @@ namespace MVCWithBlazor.Controllers
             }
 
             var abonamentModel = await _context.AbonamentModels
+                .Include(t => t.TipAbonament)
                 .Include(a => a.PersoanaModel)
                 .FirstOrDefaultAsync(m => m.AbonamentModelID == id);
             if (abonamentModel == null)

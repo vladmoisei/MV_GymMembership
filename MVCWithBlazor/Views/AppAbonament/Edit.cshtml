@@ -34,6 +34,11 @@
                 <span asp-validation-for="NrSedinteEfectuate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="TipAbonament.Denumire" class="control-label"></label>
+                <select asp-for="TipAbonamentModelID" class="form-control" asp-items="ViewBag.TipAbonamentModelID"></select>
+                <span asp-validation-for="TipAbonament.Denumire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="PersoanaModel.NumeComplet" class="control-label"></label>
                 <select asp-for="PersoanaModelID" class="form-control" asp-items="ViewBag.PersoanaModelID"></select>
                 <span asp-validation-for="PersoanaModel.NumeComplet" class="text-danger"></span>

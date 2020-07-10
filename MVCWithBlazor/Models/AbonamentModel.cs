@@ -27,6 +27,9 @@ namespace MVCWithBlazor.Models
         [Range(0, 100, ErrorMessage = "Nu pot fi mai mult de 100 sedinte.")]
         public int NrSedinteEfectuate { get; set; }
 
+        public int TipAbonamentModelID { get; set; }
+        public virtual TipAbonamentModel TipAbonament { get; set; }
+
         public int? PersoanaModelID { get; set; }
 
         public virtual PersoanaModel PersoanaModel { get; set; }
