@@ -1,4 +1,4 @@
-﻿using BoxMembershipApp.Data;
+﻿using MVCWithBlazor.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,7 +32,7 @@ namespace MVCWithBlazor.Models
 
         [Required(ErrorMessage = "Data nastere este obligatorie.")]
         [Display(Name = "Data Nastere"), DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DataNastere { get; set; }
 
         [Required(ErrorMessage = "Acest camp este obligatoriu.")]

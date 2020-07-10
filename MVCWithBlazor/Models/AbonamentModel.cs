@@ -1,4 +1,4 @@
-﻿using BoxMembershipApp.Data;
+﻿using MVCWithBlazor.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +13,11 @@ namespace MVCWithBlazor.Models
 
         [Required(ErrorMessage = "Data start abonament este obligatorie.")]
         [Display(Name = "Data Start"), DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DataStart { get; set; }
 
         [Display(Name = "Data Stop"), DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = false)]
         public DateTime DataStop { get; set; }
 
         [Display(Name = "Stare")]
