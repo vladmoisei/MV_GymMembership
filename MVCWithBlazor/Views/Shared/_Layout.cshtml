@@ -4,10 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Brohers Boxing Gym</title>
-    <base href="/" /> @*For Blazor*@ 
+    <base href="/" /> @*For Blazor*@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/datatable/datatables.css" rel="stylesheet" /> @*datatable*@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> @*Jquery Ui:*@
+    @* Syncfusion Essential JS 2 Styles *@
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+    @* Syncfusion Essential JS 2 Scripts *@
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -16,7 +20,7 @@
             <div class="container">
                 @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVCWithBlazor</a>*@
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <img class="rounded" src="~/img/Logobox.jpg" alt="Img AK Box" width="80"/>
+                    <img class="rounded" src="~/img/Logobox.jpg" alt="Img AK Box" width="80" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -70,5 +74,6 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script> @*Validation Side Client*@
     @RenderSection("JQueryUI", required: false) @*Added for JQQeury UI DatePicker Range*@
     @RenderSection("Scripts", required: false)
+    <ejs-scripts></ejs-scripts> @*Synfusion Scripts*@
 </body>
 </html>

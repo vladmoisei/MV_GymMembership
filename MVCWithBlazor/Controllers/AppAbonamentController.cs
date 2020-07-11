@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWithBlazor.Data;
 using MVCWithBlazor.Models;
+using Syncfusion.EJ2.Grids;
 
 namespace MVCWithBlazor.Controllers
 {
@@ -23,7 +24,32 @@ namespace MVCWithBlazor.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
-            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel);
+            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == DateTime.Now.Year && m.DataStart.Month == DateTime.Now.Month);
+            ViewBag.dataSource = reportDbContext.ToList();
+            return View(await reportDbContext.ToListAsync());
+        }
+
+        // POSt: AppAbonament
+        [HttpPost]
+        public async Task<IActionResult> Index(DateTime startMonth, HelperStareAbonament stareAb)
+        {
+            ViewBag.DataStart = startMonth.ToString("yyyy-MM");
+            // Facem selectie abonamente in functie de data si astare abonament
+            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == startMonth.Year && m.DataStart.Month == startMonth.Month);
+            switch (stareAb)
+            {
+                case HelperStareAbonament.Activ:
+                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Activ);
+                    break;
+                case HelperStareAbonament.Finalizat:
+                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Finalizat);
+                    break;
+                case HelperStareAbonament.Extins:
+                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Extins);
+                    break;
+                default:
+                    break;
+            }
             return View(await reportDbContext.ToListAsync());
         }
 
@@ -62,6 +88,8 @@ namespace MVCWithBlazor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AbonamentModelID,DataStart,TipAbonamentModelID,PersoanaModelID")] AbonamentModel abonamentModel)
         {
+            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire", abonamentModel.TipAbonamentModelID);
+            ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet", abonamentModel.PersoanaModelID);
             if (ModelState.IsValid)
             {
                 TipAbonamentModel tipAb = _context.TipAbonamentModels.FirstOrDefault(a => a.TipAbonamentModelID == abonamentModel.TipAbonamentModelID);
@@ -77,12 +105,13 @@ namespace MVCWithBlazor.Controllers
                 }
                 // Daca persoana nu are atrenament Finalizat nu putem sa o adaugam pe un alt abonament
                 AbonamentModel isAbExpiredPers = _context.AbonamentModels.Include(p => p.PersoanaModel)
-                    .Include(t => t.TipAbonament)
-                    .FirstOrDefault(ab => ab.PersoanaModelID == abonamentModel.PersoanaModelID);
+                    .Include(t => t.TipAbonament).FirstOrDefault(ab => ab.PersoanaModelID == abonamentModel.PersoanaModelID);
+                List<AbonamentModel> listOfAbForThisPerson = _context.AbonamentModels.Include(p => p.PersoanaModel).Include(t => t.TipAbonament).Where(ab => ab.PersoanaModelID == abonamentModel.PersoanaModelID).ToList();
+                isAbExpiredPers = listOfAbForThisPerson.LastOrDefault();
                 if (isAbExpiredPers != null)
                     if (isAbExpiredPers.StareAbonament == StareAbonament.Activ || isAbExpiredPers.StareAbonament == StareAbonament.Extins)
                     {
-                        ModelState.AddModelError($"User:", $"Persoana are abonament: {isAbExpiredPers.StareAbonament} si expira pe: " +
+                        ModelState.AddModelError($"User:", $"{isAbExpiredPers.PersoanaModel.NumeComplet} are abonament: {isAbExpiredPers.StareAbonament} si expira pe: " +
                             isAbExpiredPers.DataStop.ToString("dd.MM.yyyy"));
                         return View(abonamentModel);
                     }
@@ -90,8 +119,6 @@ namespace MVCWithBlazor.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipAbonamentModelID"] = new SelectList(_context.TipAbonamentModels, "TipAbonamentModelID", "Denumire", abonamentModel.TipAbonamentModelID);
-            ViewData["PersoanaModelID"] = new SelectList(_context.PersoanaModels, "PersoanaModelID", "NumeComplet", abonamentModel.PersoanaModelID);
             return View(abonamentModel);
         }
 

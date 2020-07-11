@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MVCWithBlazor.Models.AbonamentModel>
+﻿@using Syncfusion.EJ2
+@model IEnumerable<MVCWithBlazor.Models.AbonamentModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,9 +17,8 @@
                        min="2018-01" value=@ViewBag.DataStart>
             </div>
             <div class="form-group col-md-5">
-                <label class="control-label m-md-2">Selectie tip abonament:</label>
-                <select class="form-control" id="stareAb" name="stareAb" asp-items="Html.GetEnumSelectList<StareAbonament>()">
-                    <option value="Toate">Toate</option>
+                <label class="control-label m-md-2">Selectie stare abonament:</label>
+                <select class="form-control" id="stareAb" name="stareAb" asp-items="Html.GetEnumSelectList<HelperStareAbonament>()">
                 </select>
             </div>
             <div class="form-group col-md-2">
@@ -85,3 +85,18 @@
         }
     </tbody>
 </table>
+
+<div class="control-section">
+    <ejs-grid id="Grid" dataSource="ViewBag.dataSource" allowPaging="true">
+        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="DataStart" headerText="Data Start" format="dd.MM.yyyy" width="120"></e-grid-column>
+            <e-grid-column field="DataStop" headerText="Data Stop" format="dd.MM.yyyy" width="120"></e-grid-column>
+            <e-grid-column field="StareAbonament" headerText="Stare" width="130"></e-grid-column>
+            <e-grid-column field="NrSedinteEfectuate" headerText="Nr Sedinte Efectuate" format="C2" width="120"></e-grid-column>
+            <e-grid-column field="TipAbonament.Denumire" headerText="Tip abonament" width="140"></e-grid-column>
+            <e-grid-column field="PersoanaModel.NumeComplet" headerText="Nume Persoana" width="150"></e-grid-column>
+
+        </e-grid-columns>
+    </ejs-grid>
+</div>

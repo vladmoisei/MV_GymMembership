@@ -21,6 +21,7 @@ namespace MVCWithBlazor.Models
         public DateTime DataStop { get; set; }
 
         [Display(Name = "Stare")]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public StareAbonament StareAbonament { get; set; }
 
         [Display(Name = "Nr Sedinte Efectuate")]
