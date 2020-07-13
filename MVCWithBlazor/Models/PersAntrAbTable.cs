@@ -10,9 +10,10 @@ namespace MVCWithBlazor.Models
         public int PersAntrAbTableID { get; set; }
 
         public int PersoanaModelID { get; set; }
-
+        public virtual PersoanaModel Persoana { get; set; }
         public int AntrenamentModelID { get; set; }
-
+        public virtual AntrenamentModel Antrenament { get; set; }
         public int AbonamentModelID { get; set; }
+        public virtual AbonamentModel Abonament { get; set; }
     }
 }

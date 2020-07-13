@@ -71,6 +71,7 @@ namespace MVCWithBlazor
 
             });
             services.AddControllersWithViews(); // Add MVC
+            services.AddSingleton<AntrenamentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
