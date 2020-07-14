@@ -1,0 +1,46 @@
+﻿@inject AntrenamentService antrenamentService
+@inject ReportDbContext context
+
+<h3>AntrenamentComponent</h3>
+@if (Antrenament != null)
+{
+    <p>Antrenament Selectat: @Antrenament.Data.ToString("dd:MM:yyyy") @Antrenament.OraStart</p>
+
+    @if (Antrenament.ListaPersoane == null || Antrenament.ListaPersoane.Count == 0)
+    {
+        <text>Lista de persoane pentru acest antrenament este goala.</text>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nume</th>
+                    <th>Nr sedinte</th>
+                    <th>End Abonament</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pers in Antrenament.ListaPersoane)
+                {
+                <tr>
+                    <td>BTN_Remove</td>
+                    <td>@pers.NumeComplet</td>
+                    <td>@antrenamentService.GetNrSedinteEfByPersonID(pers.PersoanaModelID, context)</td>
+                    <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).Result.DataStop.ToString("dd:MM:yyyy")</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+@code {
+    [Parameter]
+    public AntrenamentModel Antrenament { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Antrenament != null) Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+    }
+}

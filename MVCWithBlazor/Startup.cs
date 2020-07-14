@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MVCWithBlazor.Data;
 using MVCWithBlazor.Services;
+using Syncfusion.Blazor;
 
 namespace MVCWithBlazor
 {
@@ -72,6 +73,7 @@ namespace MVCWithBlazor
             });
             services.AddControllersWithViews(); // Add MVC
             services.AddSingleton<AntrenamentService>();
+            services.AddSyncfusionBlazor(); // Add Syncfusion Blazor
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -39,6 +39,23 @@ namespace MVCWithBlazor.Controllers
             //return View(await _context.AntrenamentModels.ToListAsync());
         }
 
+        // GET: AppAntrenament zilnic
+        public async Task<IActionResult> IndexZilnic()
+        {
+            ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM-dd");
+            var lista = _antrenamentService.GetAntrenamentModelsByDay(DateTime.Now, _context).Result;
+            return View(lista);
+        }
+
+        [HttpPost] // Post: AppAntrenament zilnic cu adaugare User per antrenament
+        public async Task<IActionResult> IndexZilnic(DateTime startMonth)
+        {
+            ViewBag.DataStart = startMonth.ToString("yyyy-MM-dd");
+            var lista = _antrenamentService.GetAntrenamentModelsByDay(startMonth, _context).Result;
+            return View(lista);
+            //return View(await _context.AntrenamentModels.ToListAsync());
+        }
+
         // GET: AppAntrenament/Details/5
         public async Task<IActionResult> Details(int? id)
         {

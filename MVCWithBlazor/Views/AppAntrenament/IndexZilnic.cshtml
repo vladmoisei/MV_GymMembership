@@ -1,0 +1,75 @@
+﻿@using MVCWithBlazor.Components
+@model IEnumerable<MVCWithBlazor.Models.AntrenamentModel>
+
+@{
+    ViewData["Title"] = "IndexZilnic";
+}
+<component type="typeof(ListAntrenamenteComponent)" render-mode="ServerPrerendered" />
+@*<h1>IndexZilnic</h1>
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" asp-action="IndexZilnic">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group col-md-5">
+                <label class="control-label m-md-2">Selectie zi antrenament:</label>
+                <input class="form-control" type="date" id="startMonth" name="startMonth"
+                       min="2018-01" value=@ViewBag.DataStart>
+            </div>
+            <div class="form-group col-md-2">
+                <input type="submit" value="Afiseaza" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OraStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OraStop)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPersonalTraining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Grupa)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OraStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OraStop)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsPersonalTraining)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Grupa)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AntrenamentModelID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AntrenamentModelID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AntrenamentModelID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>*@

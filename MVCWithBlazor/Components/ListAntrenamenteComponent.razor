@@ -1,0 +1,93 @@
+﻿@inject AntrenamentService antrenamentService
+@inject ReportDbContext context
+<h3>Lista Antrenamente Component</h3>
+@*<div class="row">
+        <div class="col-md-12">
+            <EditForm class="form-inline" Model="selectieData" OnSubmit="Afiseaza">
+                <div class="form-group col-md-5">
+                    <label class="control-label m-md-2">Selectie zi antrenament:</label>
+                    <input class="form-control" type="date" id="startMonth" name="startMonth"
+                           min="2018-01" @bind-value="selectieData">
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="submit" value="Afiseaza" class="btn btn-primary" />
+                </div>
+            </EditForm>
+        </div>
+    </div>*@
+<div class="form-group col-md-5">
+    <label class="control-label m-md-2">Selectie zi antrenament:</label>
+    <input class="form-control" type="date" id="startMonth" name="startMonth"
+           min="2018-01" @bind="@selectieData" @oninput="(ui => Afiseaza((string)ui.Value))" />
+</div>
+@if (ListaAntrenamente == null)
+{
+    <text>Lista este null</text>
+}
+@if (ListaAntrenamente.Count == 0)
+{
+    <text>Nu sunt inregistrate antrenamente la data selectata: @selectieData.ToString("dd.MM.yyyy")</text>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Data</th>
+                <th>Ora start</th>
+                <th>Antrenor Personal</th>
+                <th>Grupa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ListaAntrenamente)
+            {
+                <tr>
+                    <td>
+                        @if (SelectedAntrenament != null)
+                        {<button class="btn @(SelectedAntrenament.AntrenamentModelID==item.AntrenamentModelID?"btn-outline-success":"btn-dark")" @onclick="@(arg => AntrenamentPersoane(item))">Persoane Antrenament</button>}
+                        else
+                        {
+                            <button class="btn btn-dark" @onclick="@(arg => AntrenamentPersoane(item))">Persoane Antrenament</button>
+                        }
+                    </td>
+                    <td>@item.Data.ToString("dd:MM:yyyy")</td>
+                    <td>@item.OraStart.ToString("hh:mm")</td>
+                    <td><input class="check-box" type="checkbox" disabled="disabled" Value="@item.IsPersonalTraining" /></td>
+                    <td>@item.Grupa</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AntrenamentComponent Antrenament="@SelectedAntrenament"></AntrenamentComponent>
+
+    @code {
+        DateTime selectieData;
+        List<AntrenamentModel> ListaAntrenamente { get; set; }
+        AntrenamentModel SelectedAntrenament { get; set; }
+
+        protected override void OnInitialized()
+        {
+            selectieData = DateTime.Now;
+            Afiseaza(DateTime.Now.ToString("MM/dd/yyyy"));
+        }
+        // Afiseaza lista antrenamente din ziua selectata
+        private void Afiseaza(string data)
+        {
+            SelectedAntrenament = null;
+            selectieData = Convert.ToDateTime(data);
+            ListaAntrenamente = antrenamentService.GetAntrenamentModelsByDay(selectieData, context).Result;
+            Console.WriteLine(selectieData.ToString("dd:MM:yyyy"));
+            Console.WriteLine(ListaAntrenamente.Count);
+        }
+        // Buton Afisare persoane antrenament
+        private void AntrenamentPersoane(AntrenamentModel antrenamentSelectat)
+        {
+            SelectedAntrenament = antrenamentSelectat;
+        }
+
+    }
