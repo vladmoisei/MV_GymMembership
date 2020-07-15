@@ -1,9 +1,17 @@
 ﻿@inject AntrenamentService antrenamentService
 @inject ReportDbContext context
+@using Syncfusion.Blazor.DropDowns
+@using Newtonsoft.Json
+
 
 <h3>AntrenamentComponent</h3>
 @if (Antrenament != null)
 {
+    <SfComboBox TValue="string" TItem="AbonamentModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListaAbonamenteActive">
+        <DropDownListEvents TValue="string"></DropDownListEvents>
+        <ComboBoxFieldSettings Text="PersoanaModel.NumeComplet" Value="AbonamentModelID"></ComboBoxFieldSettings>
+    </SfComboBox>
+
     <p>Antrenament Selectat: @Antrenament.Data.ToString("dd:MM:yyyy") @Antrenament.OraStart</p>
 
     @if (Antrenament.ListaPersoane == null || Antrenament.ListaPersoane.Count == 0)
@@ -24,12 +32,12 @@
             <tbody>
                 @foreach (var pers in Antrenament.ListaPersoane)
                 {
-                <tr>
-                    <td>BTN_Remove</td>
-                    <td>@pers.NumeComplet</td>
-                    <td>@antrenamentService.GetNrSedinteEfByPersonID(pers.PersoanaModelID, context)</td>
-                    <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).Result.DataStop.ToString("dd:MM:yyyy")</td>
-                </tr>
+                    <tr>
+                        <td>BTN_Remove</td>
+                        <td>@pers.NumeComplet</td>
+                        <td>@antrenamentService.GetNrSedinteEfByPersonID(pers.PersoanaModelID, context)</td>
+                        <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).Result.DataStop.ToString("dd:MM:yyyy")</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -38,9 +46,20 @@
 @code {
     [Parameter]
     public AntrenamentModel Antrenament { get; set; }
+    public List<AbonamentModel> ListaAbonamenteActive { get; set; }
+    public string DropVal { get; set; }
 
-    protected override void OnInitialized()
+
+    protected override void OnParametersSet()
     {
-        if (Antrenament != null) Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+        if (Antrenament != null)
+        {
+            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+            if (Antrenament.IsPersonalTraining)
+                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context).Result;
+            else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+            Console.WriteLine($"lista abonamente active count: {ListaAbonamenteActive.Count}");
+        }
     }
+
 }

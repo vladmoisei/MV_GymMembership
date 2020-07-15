@@ -54,7 +54,16 @@ else
                     </td>
                     <td>@item.Data.ToString("dd:MM:yyyy")</td>
                     <td>@item.OraStart.ToString("hh:mm")</td>
-                    <td><input class="check-box" type="checkbox" disabled="disabled" Value="@item.IsPersonalTraining" /></td>
+                    <td>
+                        @if (@item.IsPersonalTraining)
+                        {
+                            <input class="check-box" type="checkbox" disabled="disabled" checked />
+                        }
+                        else
+                        {
+                            <input class="check-box" type="checkbox" disabled="disabled" />
+                        }
+                    </td>
                     <td>@item.Grupa</td>
 
                 </tr>

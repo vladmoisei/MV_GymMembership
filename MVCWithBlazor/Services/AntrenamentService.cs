@@ -48,5 +48,29 @@ namespace MVCWithBlazor.Services
             string text = $"{abonament.NrSedinteEfectuate} / {abonament.TipAbonament.NrTotalSedinte}";
             return text;
         }
+
+        // Get Lista Abonamente Not Finalised where are personal training
+        public async Task<List<AbonamentModel>> GetListaAbActivePT(ReportDbContext context)
+        {
+            List<AbonamentModel> abonamente = await Task.FromResult(context.AbonamentModels.Include(t => t.TipAbonament).Include(p => p.PersoanaModel).Where(p => p.StareAbonament != StareAbonament.Finalizat && p.TipAbonament.IsPersonalTraining == true).ToList());
+
+            return abonamente;
+        }
+
+        // Get Lista Abonamente Not Finalised where are group training
+        public async Task<List<AbonamentModel>> GetListaAbActiveGrupa(ReportDbContext context)
+        {
+            List<AbonamentModel> abonamente = await Task.FromResult(context.AbonamentModels.Include(t => t.TipAbonament).Include(p => p.PersoanaModel).Where(p => p.StareAbonament != StareAbonament.Finalizat && p.TipAbonament.IsPersonalTraining == false).ToList());
+
+            return abonamente;
+        }
+
+        // Add Person To Atrenament
+        // Add Person Atrenament Abonament to PersAntrAbTable Table
+        // Add To aboanament 1 sedinta efectuata
+        public async Task AddPersonToAntrenament()
+        {
+
+        }
     }
 }
