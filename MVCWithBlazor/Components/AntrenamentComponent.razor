@@ -2,15 +2,19 @@
 @inject ReportDbContext context
 @using Syncfusion.Blazor.DropDowns
 @using Newtonsoft.Json
+@using System.Collections.ObjectModel;
 
 
 <h3>AntrenamentComponent</h3>
 @if (Antrenament != null)
 {
-    <SfComboBox TValue="string" TItem="AbonamentModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListaAbonamenteActive">
-        <DropDownListEvents TValue="string"></DropDownListEvents>
-        <ComboBoxFieldSettings Text="PersoanaModel.NumeComplet" Value="AbonamentModelID"></ComboBoxFieldSettings>
-    </SfComboBox>
+    <div class="col-md-6">
+        <SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListAbPersoanaViewModel">
+            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+            <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>
+        </SfComboBox>
+    </div>
+
 
     <p>Antrenament Selectat: @Antrenament.Data.ToString("dd:MM:yyyy") @Antrenament.OraStart</p>
 
@@ -36,7 +40,7 @@
                         <td>BTN_Remove</td>
                         <td>@pers.NumeComplet</td>
                         <td>@antrenamentService.GetNrSedinteEfByPersonID(pers.PersoanaModelID, context)</td>
-                        <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).Result.DataStop.ToString("dd:MM:yyyy")</td>
+                        <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).DataStop.ToString("dd:MM:yyyy")</td>
                     </tr>
                 }
             </tbody>
@@ -47,7 +51,9 @@
     [Parameter]
     public AntrenamentModel Antrenament { get; set; }
     public List<AbonamentModel> ListaAbonamenteActive { get; set; }
+    public ObservableCollection<AbonamentPersoanaViewModel> ListAbPersoanaViewModel { get; set; }
     public string DropVal { get; set; }
+    public string ChangeValue { get; set; }
 
 
     protected override void OnParametersSet()
@@ -56,10 +62,45 @@
         {
             Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
             if (Antrenament.IsPersonalTraining)
-                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context).Result;
+                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
             else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+            if (ListaAbonamenteActive != null)
+            {
+                ListAbPersoanaViewModel = new ObservableCollection<AbonamentPersoanaViewModel>();
+                foreach (var item in ListaAbonamenteActive)
+                {
+                    if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
+                        ListAbPersoanaViewModel.Add(
+                            new AbonamentPersoanaViewModel
+                            {
+                                AbonamentID = item.AbonamentModelID,
+                                PersoanaNume = item.PersoanaModel.NumeComplet
+                            });
+                }
+            }
             Console.WriteLine($"lista abonamente active count: {ListaAbonamenteActive.Count}");
         }
     }
+
+    public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    {
+        var itemData = JsonConvert.DeserializeObject<AbonamentPersoanaViewModel>(args.ItemData != null ? args.ItemData.ToString() : "");
+        if (itemData != null)
+        {
+            this.ChangeValue = itemData.PersoanaNume;
+            Console.WriteLine($"abon ID: {itemData.AbonamentID}");
+            DropVal = null;
+            Console.WriteLine($"Drop val after clear: {DropVal}");
+            antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
+            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+            //AbonamentModel ab = antrenamentService.GetAbonamentByAbID(itemData.AbonamentID, context);
+            AbonamentPersoanaViewModel abon = ListAbPersoanaViewModel.FirstOrDefault(o => o.AbonamentID == itemData.AbonamentID);
+            ListAbPersoanaViewModel.Add(new AbonamentPersoanaViewModel { PersoanaNume ="proba1"});
+            //ListAbPersoanaViewModel = new ObservableCollection<AbonamentPersoanaViewModel>();
+
+        }
+    }
+}
+
 
 }
