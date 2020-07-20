@@ -19,7 +19,8 @@
     
     
     <div class="col-md-6">
-        <ListCombBoxComponent ListAbPersoanaViewModel="@ListAbPersoanaViewModel" OnChange="OnChange"></ListCombBoxComponent>
+        <p>@MesajCB</p>
+        <ListCombBoxComponent Mesaj="@MesajCB" ListAbPersoanaViewModel="@ListAbPersoanaViewModel" OnChange="OnChange"></ListCombBoxComponent>
         @*<SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListAbPersoanaViewModel">
                 <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
                 <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>
@@ -60,31 +61,34 @@
     public AntrenamentModel Antrenament { get; set; }
     public List<AbonamentModel> ListaAbonamenteActive { get; set; }
     public List<AbonamentPersoanaViewModel> ListAbPersoanaViewModel { get; set; }
-
+    public string ComboVal { get; set; }
+    public string MesajCB { get; set; }
 
     protected override void OnParametersSet()
     {
         if (Antrenament != null)
         {
-            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
-            if (Antrenament.IsPersonalTraining)
-                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
-            else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
-            if (ListaAbonamenteActive != null)
-            {
-                ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
-                foreach (var item in ListaAbonamenteActive)
-                {
-                    if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
-                        ListAbPersoanaViewModel.Add(
-                            new AbonamentPersoanaViewModel
-                            {
-                                AbonamentID = item.AbonamentModelID,
-                                PersoanaNume = item.PersoanaModel.NumeComplet
-                            });
-                }
-            }
-            Console.WriteLine($"lista abonamente active count: {ListaAbonamenteActive.Count}");
+            // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
+            RefrehListViewPersoane();
+            //Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+            //if (Antrenament.IsPersonalTraining)
+            //    ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
+            //else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+            //if (ListaAbonamenteActive != null)
+            //{
+            //    ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
+            //    foreach (var item in ListaAbonamenteActive)
+            //    {
+            //        if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
+            //            ListAbPersoanaViewModel.Add(
+            //                new AbonamentPersoanaViewModel
+            //                {
+            //                    AbonamentID = item.AbonamentModelID,
+            //                    PersoanaNume = item.PersoanaModel.NumeComplet
+            //                });
+            //    }
+            //}
+            //Console.WriteLine($"lista abonamente active count: {ListaAbonamenteActive.Count}");
         }
     }
 
@@ -93,6 +97,7 @@
 
     public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
     {
+
         var itemData = JsonConvert.DeserializeObject<AbonamentPersoanaViewModel>(args.ItemData != null ? args.ItemData.ToString() : "");
         if (itemData != null)
         {
@@ -102,38 +107,65 @@
             DropVal = null;
             Console.WriteLine($"Drop val after clear: {DropVal}");
             // Adaug Persoana la Antrenament Selectat in PersAntrAbTable
-            antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
+            MesajCB = antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
 
 
             // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
-            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
-            if (Antrenament.IsPersonalTraining)
-                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
-            else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
-            if (ListaAbonamenteActive != null)
-            {
-                ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
-                foreach (var item in ListaAbonamenteActive)
-                {
-                    if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
-                        ListAbPersoanaViewModel.Add(
-                            new AbonamentPersoanaViewModel
-                            {
-                                AbonamentID = item.AbonamentModelID,
-                                PersoanaNume = item.PersoanaModel.NumeComplet
-                            });
-                }
-            }
+            RefrehListViewPersoane();
+            //Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+            //if (Antrenament.IsPersonalTraining)
+            //    ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
+            //else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+            //if (ListaAbonamenteActive != null)
+            //{
+            //    ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
+            //    foreach (var item in ListaAbonamenteActive)
+            //    {
+            //        if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
+            //            ListAbPersoanaViewModel.Add(
+            //                new AbonamentPersoanaViewModel
+            //                {
+            //                    AbonamentID = item.AbonamentModelID,
+            //                    PersoanaNume = item.PersoanaModel.NumeComplet
+            //                });
+            //    }
+            //}
+
             // Artificiu selectam un antrenament null si apoi revenim la antrenament selectat pentru a reseta selectie comboBox
-            AntrenamentModel tempAntrenament = Antrenament;
-            Antrenament = null;
-            base.StateHasChanged();
-            Antrenament = tempAntrenament;
+            // Nu il folosim ca avem eroare de la Syncfusion
+            ComboVal = "";
+            //AntrenamentModel tempAntrenament = Antrenament;
+            //Antrenament = null;
+            //base.StateHasChanged();
+            //Antrenament = tempAntrenament;
 
             //InvokeAsync(() =>
             //{
             base.StateHasChanged();
             //});
+        }
+    }
+
+    // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
+    public void RefrehListViewPersoane()
+    {
+        Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+        if (Antrenament.IsPersonalTraining)
+            ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
+        else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+        if (ListaAbonamenteActive != null)
+        {
+            ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
+            foreach (var item in ListaAbonamenteActive)
+            {
+                if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
+                    ListAbPersoanaViewModel.Add(
+                        new AbonamentPersoanaViewModel
+                        {
+                            AbonamentID = item.AbonamentModelID,
+                            PersoanaNume = item.PersoanaModel.NumeComplet
+                        });
+            }
         }
     }
 }

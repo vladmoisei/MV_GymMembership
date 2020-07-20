@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVCWithBlazor.Data;
 using MVCWithBlazor.Models;
+using Syncfusion.Blazor.Gantt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace MVCWithBlazor.Services
             List<AbonamentModel> lista = context.AbonamentModels.Include(t => t.TipAbonament)
                 .Include(p => p.PersoanaModel).ToList();
             AbonamentModel abonament = lista.LastOrDefault(p => p.PersoanaModelID == persoanaID && p.StareAbonament != StareAbonament.Finalizat);
-            
+
             return abonament;
         }
 
@@ -54,7 +55,7 @@ namespace MVCWithBlazor.Services
         // Get Lista Abonamente Not Finalised where are personal training
         public List<AbonamentModel> GetListaAbActivePT(ReportDbContext context)
         {
-            List<AbonamentModel> abonamente =context.AbonamentModels.Include(t => t.TipAbonament).Include(p => p.PersoanaModel).Where(p => p.StareAbonament != StareAbonament.Finalizat && p.TipAbonament.IsPersonalTraining == true).ToList();
+            List<AbonamentModel> abonamente = context.AbonamentModels.Include(t => t.TipAbonament).Include(p => p.PersoanaModel).Where(p => p.StareAbonament != StareAbonament.Finalizat && p.TipAbonament.IsPersonalTraining == true).ToList();
 
             return abonamente;
         }
@@ -85,13 +86,27 @@ namespace MVCWithBlazor.Services
         // Add Person To Atrenament
         // Add Person Atrenament Abonament to PersAntrAbTable Table
         // Add To aboanament 1 sedinta efectuata
-        public void AddPersonToAntrenament(AntrenamentModel antrenament, int abonamentID, ReportDbContext context)
+        public string AddPersonToAntrenament(AntrenamentModel antrenament, int abonamentID, ReportDbContext context)
         {
-            context.PersAntrAbTables.Add(new PersAntrAbTable { AntrenamentModelID = antrenament.AntrenamentModelID, 
-                AbonamentModelID = abonamentID, PersoanaModelID = (int)GetAbonamentByAbID(abonamentID, context).PersoanaModelID});
+            AbonamentModel ab = GetAbonamentByAbID(abonamentID, context);
+            if (!context.PersAntrAbTables.Any(item => item.AntrenamentModelID == antrenament.AntrenamentModelID &&
+                item.AbonamentModelID == abonamentID))
+            {
+                if (ab.StareAbonament == StareAbonament.Finalizat)
+                    return $"Persoana {ab.PersoanaModel.NumeComplet} are abonamentul finalizat!!!";
+             
+                context.PersAntrAbTables.Add(new PersAntrAbTable
+                {
+                    AntrenamentModelID = antrenament.AntrenamentModelID,
+                    AbonamentModelID = abonamentID,
+                    PersoanaModelID = (int)GetAbonamentByAbID(abonamentID, context).PersoanaModelID
+                });
 
-            UpdateNrSedinteEfAbonamentbyID(abonamentID, context);
-            context.SaveChanges();
+                UpdateNrSedinteEfAbonamentbyID(abonamentID, context);
+                context.SaveChanges();
+                return $"Persoana {ab.PersoanaModel.NumeComplet} a fost adaugata la antrenament!";
+            }
+            return $"Persoana {ab.PersoanaModel.NumeComplet} este deja adaugata in antrenament";
         }
 
         // Update Nr sedinte efectuate 
