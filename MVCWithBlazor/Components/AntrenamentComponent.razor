@@ -1,22 +1,30 @@
-﻿@inject AntrenamentService antrenamentService
-@inject ReportDbContext context
-@using Syncfusion.Blazor.DropDowns
+﻿@using Syncfusion.Blazor.DropDowns
 @using Newtonsoft.Json
-@using System.Collections.ObjectModel;
+@inject AntrenamentService antrenamentService
+@inject ReportDbContext context
+@inject NavigationManager NavigationManager;
 
-
-<h3>AntrenamentComponent</h3>
 @if (Antrenament != null)
 {
-    <div class="col-md-6">
-        <SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListAbPersoanaViewModel">
-            <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
-            <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>
-        </SfComboBox>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Antrenament selectat: </h3>
+        </div>
+        <div class="col-md-6">
+            <p class="font-weight-bolder">@($"Data: {Antrenament.Data.ToString("dd:MM:yyyy")}, Ora: {Antrenament.OraStart.ToString("hh:mm")}, Grupa: {Antrenament.Grupa},PT: { Antrenament.IsPersonalTraining}")</p>
+        </div>
+        
+        
     </div>
-
-
-    <p>Antrenament Selectat: @Antrenament.Data.ToString("dd:MM:yyyy") @Antrenament.OraStart</p>
+    
+    
+    <div class="col-md-6">
+        <ListCombBoxComponent ListAbPersoanaViewModel="@ListAbPersoanaViewModel" OnChange="OnChange"></ListCombBoxComponent>
+        @*<SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListAbPersoanaViewModel">
+                <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+                <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>
+            </SfComboBox>*@
+    </div>
 
     @if (Antrenament.ListaPersoane == null || Antrenament.ListaPersoane.Count == 0)
     {
@@ -51,9 +59,7 @@
     [Parameter]
     public AntrenamentModel Antrenament { get; set; }
     public List<AbonamentModel> ListaAbonamenteActive { get; set; }
-    public ObservableCollection<AbonamentPersoanaViewModel> ListAbPersoanaViewModel { get; set; }
-    public string DropVal { get; set; }
-    public string ChangeValue { get; set; }
+    public List<AbonamentPersoanaViewModel> ListAbPersoanaViewModel { get; set; }
 
 
     protected override void OnParametersSet()
@@ -66,7 +72,7 @@
             else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
             if (ListaAbonamenteActive != null)
             {
-                ListAbPersoanaViewModel = new ObservableCollection<AbonamentPersoanaViewModel>();
+                ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
                 foreach (var item in ListaAbonamenteActive)
                 {
                     if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
@@ -82,25 +88,52 @@
         }
     }
 
+    public string DropVal { get; set; }
+    public string ChangeValue { get; set; }
+
     public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
     {
         var itemData = JsonConvert.DeserializeObject<AbonamentPersoanaViewModel>(args.ItemData != null ? args.ItemData.ToString() : "");
         if (itemData != null)
         {
-            this.ChangeValue = itemData.PersoanaNume;
+            ChangeValue = itemData.PersoanaNume;
             Console.WriteLine($"abon ID: {itemData.AbonamentID}");
+            Console.WriteLine($"DropVal: {DropVal}");
             DropVal = null;
             Console.WriteLine($"Drop val after clear: {DropVal}");
+            // Adaug Persoana la Antrenament Selectat in PersAntrAbTable
             antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
-            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
-            //AbonamentModel ab = antrenamentService.GetAbonamentByAbID(itemData.AbonamentID, context);
-            AbonamentPersoanaViewModel abon = ListAbPersoanaViewModel.FirstOrDefault(o => o.AbonamentID == itemData.AbonamentID);
-            ListAbPersoanaViewModel.Add(new AbonamentPersoanaViewModel { PersoanaNume ="proba1"});
-            //ListAbPersoanaViewModel = new ObservableCollection<AbonamentPersoanaViewModel>();
 
+
+            // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
+            Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+            if (Antrenament.IsPersonalTraining)
+                ListaAbonamenteActive = antrenamentService.GetListaAbActivePT(context);
+            else ListaAbonamenteActive = antrenamentService.GetListaAbActiveGrupa(context).Result;
+            if (ListaAbonamenteActive != null)
+            {
+                ListAbPersoanaViewModel = new List<AbonamentPersoanaViewModel>();
+                foreach (var item in ListaAbonamenteActive)
+                {
+                    if (!antrenamentService.IsAbonamentInAntrenament(item, Antrenament, context))
+                        ListAbPersoanaViewModel.Add(
+                            new AbonamentPersoanaViewModel
+                            {
+                                AbonamentID = item.AbonamentModelID,
+                                PersoanaNume = item.PersoanaModel.NumeComplet
+                            });
+                }
+            }
+            // Artificiu selectam un antrenament null si apoi revenim la antrenament selectat pentru a reseta selectie comboBox
+            AntrenamentModel tempAntrenament = Antrenament;
+            Antrenament = null;
+            base.StateHasChanged();
+            Antrenament = tempAntrenament;
+
+            //InvokeAsync(() =>
+            //{
+            base.StateHasChanged();
+            //});
         }
     }
-}
-
-
 }

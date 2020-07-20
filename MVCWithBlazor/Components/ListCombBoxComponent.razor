@@ -1,0 +1,50 @@
+﻿@using Syncfusion.Blazor.DropDowns
+@using Newtonsoft.Json
+@inject AntrenamentService antrenamentService
+@inject ReportDbContext context
+
+<h3>ListCombBoxComponent</h3>
+<SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" @bind-Value="@DropVal" DataSource="@ListAbPersoanaViewModel">
+    <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
+    <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>
+</SfComboBox>
+
+
+
+@code {
+    [Parameter]
+    public List<AbonamentPersoanaViewModel> ListAbPersoanaViewModel { get; set; }
+    [Parameter]
+    public EventCallback<Syncfusion.Blazor.DropDowns.ChangeEventArgs<string>> OnChange { get; set; }
+
+    public string DropVal { get; set; }
+    public string ChangeValue { get; set; }
+
+    //public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
+    //{
+    //    var itemData = JsonConvert.DeserializeObject<AbonamentPersoanaViewModel>(args.ItemData != null ? args.ItemData.ToString() : "");
+    //    if (itemData != null)
+    //    {
+    //        this.ChangeValue = itemData.PersoanaNume;
+    //        Console.WriteLine($"abon ID: {itemData.AbonamentID}");
+    //        Console.WriteLine($"DropVal: {DropVal}");
+    //        DropVal = null;
+    //        Console.WriteLine($"Drop val after clear: {DropVal}");
+    //        antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
+    //        Antrenament.ListaPersoane = antrenamentService.GetListOfPersByAntrID(Antrenament.AntrenamentModelID, context).Result;
+    //        //AbonamentModel ab = antrenamentService.GetAbonamentByAbID(itemData.AbonamentID, context);
+    //        AbonamentPersoanaViewModel abon = ListAbPersoanaViewModel.FirstOrDefault(o => o.AbonamentID == itemData.AbonamentID);
+    //        ListAbPersoanaViewModel.Add(new AbonamentPersoanaViewModel { PersoanaNume = "proba1" });
+    //        //ListAbPersoanaViewModel = new ObservableCollection<AbonamentPersoanaViewModel>();
+    //        //NavigationManager.NavigateTo("ListCombBoxComponent", true); // Refresh page
+    //        InvokeAsync(() =>
+    //        {
+
+    //            base.StateHasChanged();
+    //        });
+    //    }
+    //}
+
+
+}
+

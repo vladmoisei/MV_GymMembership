@@ -89,6 +89,23 @@ namespace MVCWithBlazor.Services
         {
             context.PersAntrAbTables.Add(new PersAntrAbTable { AntrenamentModelID = antrenament.AntrenamentModelID, 
                 AbonamentModelID = abonamentID, PersoanaModelID = (int)GetAbonamentByAbID(abonamentID, context).PersoanaModelID});
+
+            UpdateNrSedinteEfAbonamentbyID(abonamentID, context);
+            context.SaveChanges();
+        }
+
+        // Update Nr sedinte efectuate 
+        // Daca o persoana a fost adaugata la un antrenament
+        public void UpdateNrSedinteEfAbonamentbyID(int abonamentID, ReportDbContext context)
+        {
+            var abonamentModel = context.AbonamentModels
+                .Include(t => t.TipAbonament)
+                .Include(a => a.PersoanaModel)
+                .FirstOrDefault(m => m.AbonamentModelID == abonamentID);
+
+            abonamentModel.NrSedinteEfectuate += 1;
+
+            context.Update(abonamentModel);
             context.SaveChanges();
         }
     }
