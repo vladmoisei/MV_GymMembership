@@ -156,6 +156,10 @@ namespace MVCWithBlazor.Controllers
             {
                 try
                 {
+                    // Daca extindem abonament facem implicit abonament extins
+                    if ((abonamentModel.DataStop - abonamentModel.DataStart).TotalDays > 32) 
+                        abonamentModel.StareAbonament = StareAbonament.Extins;
+                    
                     _context.Update(abonamentModel);
                     await _context.SaveChangesAsync();
                 }

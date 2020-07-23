@@ -3,7 +3,7 @@
 @inject AntrenamentService antrenamentService
 @inject ReportDbContext context
 
-<h3>ListCombBoxComponent</h3>
+@*<h3>ListCombBoxComponent</h3>*@
 <SfComboBox TValue="string" TItem="AbonamentPersoanaViewModel" PopupHeight="230px" Placeholder="Selecteaza o persoana" AllowFiltering="true" Value="@ComboVal" DataSource="@ListAbPersoanaViewModel">
     <DropDownListEvents TValue="string" ValueChange="OnChange"></DropDownListEvents>
     <ComboBoxFieldSettings Text="PersoanaNume" Value="AbonamentID"></ComboBoxFieldSettings>

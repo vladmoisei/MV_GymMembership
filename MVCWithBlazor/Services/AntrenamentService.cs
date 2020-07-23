@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MVCWithBlazor.Data;
 using MVCWithBlazor.Models;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Syncfusion.Blazor.Gantt;
 using System;
 using System.Collections.Generic;
@@ -68,6 +69,14 @@ namespace MVCWithBlazor.Services
             return abonamente;
         }
 
+        // Get Lista Abonamente Not Finalised
+        public async Task<List<AbonamentModel>> GetListaAbActive(ReportDbContext context)
+        {
+            List<AbonamentModel> abonamente = await Task.FromResult(context.AbonamentModels.Include(t => t.TipAbonament).Include(p => p.PersoanaModel).Where(p => p.StareAbonament != StareAbonament.Finalizat).ToList());
+
+            return abonamente;
+        }
+
         // Get Abonament by AbonamentID
         public AbonamentModel GetAbonamentByAbID(int abonamentID, ReportDbContext context)
         {
@@ -101,27 +110,79 @@ namespace MVCWithBlazor.Services
                     AbonamentModelID = abonamentID,
                     PersoanaModelID = (int)GetAbonamentByAbID(abonamentID, context).PersoanaModelID
                 });
-
-                UpdateNrSedinteEfAbonamentbyID(abonamentID, context);
                 context.SaveChanges();
+                UpdateNrSedinteEfAbonamentbyID(1, abonamentID, context); // Update nr sedinte efectuate abonament
                 return $"Persoana {ab.PersoanaModel.NumeComplet} a fost adaugata la antrenament!";
             }
             return $"Persoana {ab.PersoanaModel.NumeComplet} este deja adaugata in antrenament";
         }
 
+        // Remove Person From Atrenament
+        // Remove Person Atrenament Abonament From PersAntrAbTable Table
+        // Remove From aboanament 1 sedinta efectuata
+        public string RemovePersonFromAntrenament(AntrenamentModel antrenament, int abonamentID, ReportDbContext context)
+        {
+            PersoanaModel persoana= GetAbonamentByAbID(abonamentID, context).PersoanaModel;
+            var persAntrAbTable = context.PersAntrAbTables
+                .Include(t => t.Abonament)
+                .Include(a => a.Persoana)
+                .Include(aa => aa.Antrenament)
+                .FirstOrDefault(m => m.AntrenamentModelID == antrenament.AntrenamentModelID && m.AbonamentModelID == abonamentID);
+            if (persAntrAbTable == null)
+                return $"Nu s-a gasit persoana cu numele: {persoana.NumeComplet} in antrenament!";
+            context.PersAntrAbTables.Remove(persAntrAbTable);
+            context.SaveChanges();
+            UpdateNrSedinteEfAbonamentbyID(-1, abonamentID, context); // Update nr sedinte efectuate abonament
+            return $"Persoana {persoana.NumeComplet} a fost stearsa din antrenament";
+        }
+
         // Update Nr sedinte efectuate 
         // Daca o persoana a fost adaugata la un antrenament
-        public void UpdateNrSedinteEfAbonamentbyID(int abonamentID, ReportDbContext context)
+        public void UpdateNrSedinteEfAbonamentbyID(int nr,int abonamentID, ReportDbContext context)
         {
             var abonamentModel = context.AbonamentModels
                 .Include(t => t.TipAbonament)
                 .Include(a => a.PersoanaModel)
                 .FirstOrDefault(m => m.AbonamentModelID == abonamentID);
 
-            abonamentModel.NrSedinteEfectuate += 1;
+            abonamentModel.NrSedinteEfectuate += nr;
 
             context.Update(abonamentModel);
             context.SaveChanges();
         }
+
+        // Update status Of Abonament
+        // Verificam daca a expirat abonament (in functie de data)
+        // Verificam daca a atins nr maxim de sedinte
+        public void RefreshStatusAbonament(int abonamentID, ReportDbContext context)
+        {
+            AbonamentModel abonament = GetAbonamentByAbID(abonamentID, context);
+            if (abonament == null)
+                return;
+            if (abonament.NrSedinteEfectuate >= abonament.TipAbonament.NrTotalSedinte)
+            {
+                abonament.StareAbonament = StareAbonament.Finalizat;
+                return;
+            }
+            if (abonament.DataStop >= DateTime.Now)
+                abonament.StareAbonament = StareAbonament.Finalizat;
+            else if ((abonament.DataStop - abonament.DataStart).TotalDays > 32)
+                abonament.StareAbonament = StareAbonament.Extins;
+            else abonament.StareAbonament = StareAbonament.Activ;
+
+            context.Update(abonament);
+            context.SaveChanges();
+        }
+
+        // Update status Of Abonamente dupa zi
+        public void RefreshStatusAbonamentsPerDay(DateTime date, ReportDbContext context)
+        {
+            var listaAbActive = GetListaAbActive(context).Result;
+            foreach (var item in listaAbActive)
+            {
+                RefreshStatusAbonament(item.AbonamentModelID, context);
+            }
+        }
+
     }
 }
