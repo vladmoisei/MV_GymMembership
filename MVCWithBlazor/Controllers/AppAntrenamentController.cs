@@ -91,7 +91,7 @@ namespace MVCWithBlazor.Controllers
             {
                 _context.Add(antrenamentModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexZilnic));
             }
             return View(antrenamentModel);
         }

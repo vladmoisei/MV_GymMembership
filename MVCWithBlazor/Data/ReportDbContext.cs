@@ -14,8 +14,6 @@ namespace MVCWithBlazor.Data
             : base(options)
         { }
 
-        public DbSet<PlcModel> Plcs { get; set; }
-        public DbSet<TagModel> Tags { get; set; }
         public DbSet<PersoanaModel> PersoanaModels { get; set; }
         public DbSet<TipAbonamentModel> TipAbonamentModels { get; set; }
         public DbSet<AbonamentModel> AbonamentModels { get; set; }

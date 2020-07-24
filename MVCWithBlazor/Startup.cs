@@ -29,7 +29,6 @@ namespace MVCWithBlazor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Auxiliar>(); // Added by me for Test purpose
             // @"Server=172.16.4.165\SQLEXPRESS;Database=Don_DashboardReports;User Id=user; Password=Calarasi81; MultipleActiveResultSets=true;")
             services.AddDbContext<ReportDbContext>(options =>
                 options.UseSqlServer(
