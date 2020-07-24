@@ -39,16 +39,24 @@ namespace MVCWithBlazor.Services
         {
             List<AbonamentModel> lista = context.AbonamentModels.Include(t => t.TipAbonament)
                 .Include(p => p.PersoanaModel).ToList();
-            AbonamentModel abonament = lista.LastOrDefault(p => p.PersoanaModelID == persoanaID && p.StareAbonament != StareAbonament.Finalizat);
+            AbonamentModel abonament = lista.LastOrDefault(p => p.PersoanaModelID == persoanaID && p.StareAbonament != StareAbonament.Finalizat);  /**/
+            return abonament;
+        }
 
+        // Get Abonament By Last Person , indiferent de stare abonament
+        public AbonamentModel GetAbonamentByLastPersonID(int persoanaID, ReportDbContext context)
+        {
+            List<AbonamentModel> lista = context.AbonamentModels.Include(t => t.TipAbonament)
+                .Include(p => p.PersoanaModel).ToList();
+            AbonamentModel abonament = lista.LastOrDefault(p => p.PersoanaModelID == persoanaID);  /**/
             return abonament;
         }
 
         // Get string Text nr sedinte efectuate By PersonID
         public string GetNrSedinteEfByPersonID(int persoanaID, ReportDbContext context)
         {
-            AbonamentModel abonament = GetAbonamentByPersonID(persoanaID, context);
-
+            AbonamentModel abonament = GetAbonamentByLastPersonID(persoanaID, context);
+            if (abonament == null) return "null";
             string text = $"{abonament.NrSedinteEfectuate} / {abonament.TipAbonament.NrTotalSedinte}";
             return text;
         }
@@ -162,11 +170,18 @@ namespace MVCWithBlazor.Services
             if (abonament.NrSedinteEfectuate >= abonament.TipAbonament.NrTotalSedinte)
             {
                 abonament.StareAbonament = StareAbonament.Finalizat;
+                context.Update(abonament);
+                context.SaveChanges();
                 return;
             }
-            if (abonament.DataStop >= DateTime.Now)
+            if (abonament.DataStop <= DateTime.Now)
+            {
                 abonament.StareAbonament = StareAbonament.Finalizat;
-            else if ((abonament.DataStop - abonament.DataStart).TotalDays > 32)
+                context.Update(abonament);
+                context.SaveChanges();
+                return;
+            }
+            if ((abonament.DataStop - abonament.DataStart).TotalDays > 32)
                 abonament.StareAbonament = StareAbonament.Extins;
             else abonament.StareAbonament = StareAbonament.Activ;
 
@@ -175,7 +190,7 @@ namespace MVCWithBlazor.Services
         }
 
         // Update status Of Abonamente dupa zi
-        public void RefreshStatusAbonamentsPerDay(DateTime date, ReportDbContext context)
+        public void RefreshStatusAbonamentsActive(ReportDbContext context)
         {
             var listaAbActive = GetListaAbActive(context).Result;
             foreach (var item in listaAbActive)

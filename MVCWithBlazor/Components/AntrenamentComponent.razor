@@ -43,7 +43,7 @@
                         <td><button class="btn btn-outline-danger" @onclick="@(elem => RemovePersonFromAntrenament(pers))">Sterge persoana</button></td>
                         <td>@pers.NumeComplet</td>
                         <td>@antrenamentService.GetNrSedinteEfByPersonID(pers.PersoanaModelID, context)</td>
-                        <td>@antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).DataStop.ToString("dd:MM:yyyy")</td>
+                        <td>@antrenamentService.GetAbonamentByLastPersonID(pers.PersoanaModelID, context).DataStop.ToString("dd:MM:yyyy")</td>
                     </tr>
                 }
             </tbody>
@@ -70,6 +70,7 @@
     public string DropVal { get; set; }
     public string ChangeValue { get; set; }
 
+    // Add Person abonament To Antrenament
     public void OnChange(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string> args)
     {
 
@@ -83,8 +84,9 @@
             Console.WriteLine($"Drop val after clear: {DropVal}");
             // Adaug Persoana la Antrenament Selectat in PersAntrAbTable
             MesajCB = antrenamentService.AddPersonToAntrenament(Antrenament, itemData.AbonamentID, context);
-
-
+            // Reset Status abonament
+            AbonamentModel ab = antrenamentService.GetAbonamentByAbID(itemData.AbonamentID, context);
+            antrenamentService.RefreshStatusAbonament(ab.AbonamentModelID, context);
             // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
             RefrehListViewPersoane();
 
@@ -106,7 +108,10 @@
     // Remove person from antrenament
     public void RemovePersonFromAntrenament(PersoanaModel pers)
     {
-        MesajCB = antrenamentService.RemovePersonFromAntrenament(Antrenament, antrenamentService.GetAbonamentByPersonID(pers.PersoanaModelID, context).AbonamentModelID, context);
+        AbonamentModel ab = antrenamentService.GetAbonamentByLastPersonID(pers.PersoanaModelID, context);
+        MesajCB = antrenamentService.RemovePersonFromAntrenament(Antrenament, ab.AbonamentModelID, context);
+        // Reset Status abonament
+        antrenamentService.RefreshStatusAbonament(ab.AbonamentModelID, context);
         // Reinitializare Lista pentru ComboBox dupa ce am adaugat un element
         RefrehListViewPersoane();
     }

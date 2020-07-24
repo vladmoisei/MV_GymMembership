@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCWithBlazor.Data;
 using MVCWithBlazor.Models;
+using MVCWithBlazor.Services;
 using Syncfusion.EJ2.Grids;
 
 namespace MVCWithBlazor.Controllers
@@ -14,15 +15,20 @@ namespace MVCWithBlazor.Controllers
     public class AppAbonamentController : Controller
     {
         private readonly ReportDbContext _context;
+        private readonly AntrenamentService _antrenamentService;
 
-        public AppAbonamentController(ReportDbContext context)
+        public AppAbonamentController(ReportDbContext context, AntrenamentService antrenamentService)
         {
             _context = context;
+            _antrenamentService = antrenamentService;
         }
 
         // GET: AppAbonament
         public async Task<IActionResult> Index()
         {
+            // Refresh Status for each not Finalised Abonament
+            _antrenamentService.RefreshStatusAbonamentsActive(_context);
+
             ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
             var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == DateTime.Now.Year && m.DataStart.Month == DateTime.Now.Month);
             ViewBag.dataSource = reportDbContext.ToList();
@@ -33,6 +39,9 @@ namespace MVCWithBlazor.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(DateTime startMonth, HelperStareAbonament stareAb)
         {
+            // Refresh Status for each not Finalised Abonament
+            _antrenamentService.RefreshStatusAbonamentsActive(_context);
+
             ViewBag.DataStart = startMonth.ToString("yyyy-MM");
             // Facem selectie abonamente in functie de data si astare abonament
             var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == startMonth.Year && m.DataStart.Month == startMonth.Month);

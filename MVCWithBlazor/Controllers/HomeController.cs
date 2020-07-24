@@ -6,17 +6,26 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MVCWithBlazor.Data;
 using MVCWithBlazor.Models;
+using MVCWithBlazor.Services;
 
 namespace MVCWithBlazor.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        AntrenamentService _antrenamentService;
+        ReportDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AntrenamentService antrenamentService, ReportDbContext context)
         {
             _logger = logger;
+            _antrenamentService = antrenamentService;
+            _context = context;
+
+            // Refresh Status for each not Finalised Abonament
+            _antrenamentService.RefreshStatusAbonamentsActive(_context);
         }
 
         public IActionResult Index()
