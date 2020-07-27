@@ -44,6 +44,7 @@ namespace MVCWithBlazor.Models
         public DateTime DataNastere { get; set; }
 
         [Required(ErrorMessage = "Acest camp este obligatoriu.")]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Sex Sex { get; set; }
 
         [Display(Name = "Acord GDPR")]

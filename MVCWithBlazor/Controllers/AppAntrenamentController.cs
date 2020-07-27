@@ -27,6 +27,7 @@ namespace MVCWithBlazor.Controllers
         {
             ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
             var lista = _antrenamentService.GetAntrenamentModelsByMonth(DateTime.Now, _context).Result;
+            ViewBag.dataSource = lista;
             return View(lista);
             //return View(await _context.AntrenamentModels.ToListAsync());
         }
@@ -35,6 +36,7 @@ namespace MVCWithBlazor.Controllers
         {
             ViewBag.DataStart = startMonth.ToString("yyyy-MM");
             var lista = _antrenamentService.GetAntrenamentModelsByMonth(startMonth, _context).Result;
+            ViewBag.dataSource = lista;
             return View(lista);
             //return View(await _context.AntrenamentModels.ToListAsync());
         }

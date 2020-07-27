@@ -22,7 +22,9 @@ namespace MVCWithBlazor.Controllers
         // GET: AppPersoana
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PersoanaModels.ToListAsync());
+            List<PersoanaModel> reportDbContext = await _context.PersoanaModels.ToListAsync();
+            ViewBag.dataSource = reportDbContext;
+            return View(reportDbContext);
         }
 
         // GET: AppPersoana/Details/5

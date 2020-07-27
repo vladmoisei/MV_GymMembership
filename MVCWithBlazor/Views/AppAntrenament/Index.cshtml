@@ -10,7 +10,7 @@
         <form class="form-inline" asp-action="Index">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group col-md-5">
-                <label class="control-label m-md-2">Selectie zi antrenament:</label>
+                <label class="control-label m-md-2">Selectie luna vizualizare:</label>
                 <input class="form-control" type="month" id="startMonth" name="startMonth"
                        min="2018-01" value=@ViewBag.DataStart>
             </div>
@@ -24,7 +24,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+
+<div class="control-section">
+    <ejs-grid id="Grid" dataSource="ViewBag.dataSource" allowSorting="true" allowPaging="true" toolbar="@(new List<string>() { "Search" })">
+        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="Data" headerText="Data" format="dd.MM.yyyy" width="120"></e-grid-column>
+            <e-grid-column field="OraStart" headerText="OraStart" format="HH:mm" width="120"></e-grid-column>
+            <e-grid-column field="OraStop" headerText="OraStop" format="HH:mm" width="120"></e-grid-column>
+            <e-grid-column field="IsPersonalTraining" headerText="PT" displayAsCheckBox="true" editType="booleanedit" type="boolean" width="80"></e-grid-column>
+            <e-grid-column field="Grupa" headerText="Grupa" width="120"></e-grid-column>
+            <e-grid-column template="<a href='/AppAntrenament/Edit/${AntrenamentModelID}'>Edit</a> |
+                    <a href='/AppAntrenament/Details/${AntrenamentModelID}'>Details</a> |
+                    <a href='/AppAntrenament/Delete/${AntrenamentModelID}'>Delete</a>" headerText="Editare" width="150"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -71,4 +90,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

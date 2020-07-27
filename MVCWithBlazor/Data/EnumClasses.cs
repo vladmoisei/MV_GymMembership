@@ -8,7 +8,9 @@ namespace MVCWithBlazor
 {
     public enum Sex
     {
+        [EnumMember(Value = "M")]
         M,
+        [EnumMember(Value = "F")]
         F
     }
 

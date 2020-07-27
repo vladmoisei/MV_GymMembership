@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Index Abonament</h1>
 
 <div class="row">
     <div class="col-md-12">
@@ -16,11 +16,11 @@
                 <input class="form-control" type="month" id="startMonth" name="startMonth"
                        min="2018-01" value=@ViewBag.DataStart>
             </div>
-            <div class="form-group col-md-5">
+            @*<div class="form-group col-md-5">
                 <label class="control-label m-md-2">Selectie stare abonament:</label>
                 <select class="form-control" id="stareAb" name="stareAb" asp-items="Html.GetEnumSelectList<HelperStareAbonament>()">
                 </select>
-            </div>
+            </div>*@
             <div class="form-group col-md-2">
                 <input type="submit" value="Afiseaza" class="btn btn-primary" />
             </div>
@@ -30,7 +30,44 @@
 <p>
     <a asp-action="Create">Creaza abonament nou</a>
 </p>
-<table class="table">
+
+<div class="control-section">
+    <ejs-grid id="Grid" dataSource="ViewBag.dataSource" queryCellInfo="customiseCell" allowSorting="true" allowPaging="true" toolbar="@(new List<string>() { "Search" })">
+        <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="DataStart" headerText="Data Start" format="dd.MM.yyyy" width="120"></e-grid-column>
+            <e-grid-column field="DataStop" headerText="Data Stop" format="dd.MM.yyyy" width="120"></e-grid-column>
+            <e-grid-column field="StareAbonament" headerText="Stare" width="130"></e-grid-column>
+            <e-grid-column field="NrSedinteEfectuate" headerText="Nr Sedinte Efectuate" width="120"></e-grid-column>
+            <e-grid-column field="TipAbonament.Denumire" headerText="Tip abonament" width="140"></e-grid-column>
+            <e-grid-column field="PersoanaModel.NumeComplet" headerText="Nume Persoana" width="150"></e-grid-column>
+            <e-grid-column template="<a href='/AppAbonament/Edit/${AbonamentModelID}'>Edit</a> |
+                    <a href='/AppAbonament/Details/${AbonamentModelID}'>Details</a> |
+                    <a href='/AppAbonament/Delete/${AbonamentModelID}'>Delete</a>" headerText="Editare" width="150"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+@*Change color for each cell by StareAbonament Status*@
+@section Scripts{
+    <script type="text/javascript">
+        function customiseCell(args) {
+            if (args.column.field === 'StareAbonament') {
+                if (args.data['StareAbonament'] === '@StareAbonament.Finalizat') {
+                    args.cell.classList.add('bgnd_red');
+                }
+                else if (args.data['StareAbonament'] === '@StareAbonament.Extins') {
+                    args.cell.classList.add('bgnd_yellow');
+                }
+            }
+        }
+    </script>
+}
+
+
+
+@*Old Code - Initial way*@
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -84,9 +121,9 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@
 
-<div class="control-section">
+@*<div class="control-section">
     <ejs-grid id="Grid" dataSource="ViewBag.dataSource" allowPaging="true">
         <e-grid-pagesettings pageCount="5"></e-grid-pagesettings>
         <e-grid-columns>
@@ -99,4 +136,4 @@
 
         </e-grid-columns>
     </ejs-grid>
-</div>
+</div>*@

@@ -45,20 +45,21 @@ namespace MVCWithBlazor.Controllers
             ViewBag.DataStart = startMonth.ToString("yyyy-MM");
             // Facem selectie abonamente in functie de data si astare abonament
             var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == startMonth.Year && m.DataStart.Month == startMonth.Month);
-            switch (stareAb)
-            {
-                case HelperStareAbonament.Activ:
-                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Activ);
-                    break;
-                case HelperStareAbonament.Finalizat:
-                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Finalizat);
-                    break;
-                case HelperStareAbonament.Extins:
-                    reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Extins);
-                    break;
-                default:
-                    break;
-            }
+            //switch (stareAb)
+            //{
+            //    case HelperStareAbonament.Activ:
+            //        reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Activ);
+            //        break;
+            //    case HelperStareAbonament.Finalizat:
+            //        reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Finalizat);
+            //        break;
+            //    case HelperStareAbonament.Extins:
+            //        reportDbContext = reportDbContext.Where(m => m.StareAbonament == StareAbonament.Extins);
+            //        break;
+            //    default:
+            //        break;
+            //}
+            ViewBag.dataSource = reportDbContext.ToList();
             return View(await reportDbContext.ToListAsync());
         }
 
