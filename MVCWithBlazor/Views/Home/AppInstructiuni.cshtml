@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "App Instructiuni";
+}
+
+<h1>App Instructiuni</h1>
+
+<h3>Intructiuni generale</h3>
+
+<p>
+    Aplicatia este impartita in 4 baze de date:
+    <ul>
+        <li>Membri sau Persoane</li>
+        <li>Abonamente</li>
+        <li>Antrenamente</li>
+        <li>Tip Abonament</li>
+    </ul>
+</p>
+<p>
+    Dupa ce te log-ezi ca Admin ai acces in Meniu la submeniul pentru aplicatie <strong>App Membri</strong>.
+    Mai departe descriem ce poti face in fiecare baza de date.
+</p>
+
+<h3>Index Persoana</h3>
+<p>
+    In acesta fereastra poti vedea toate persoanele(membri) inregistrate in aplicatie.
+</p>
+<h4>Creare Persoana</h4>
+<p>
+    Pentru a adauga o persoana noua apa butonul <strong>Creaza persoana noua</strong>
+    Dupa introducerea datelor daca uiti sa introdduci o data sau numarul de telefon nu este valid, vei primi un mesaj de eroare
+    pentru a corecta greseala, de asemenea datele nu vor fi salvate.
+    Dupa introducerea datelor apasa butonul <strong>Create</strong>. Daca datele au fost salvate pe server,
+    vei fi redirectionat la pagina index persoane, unde vei putea vizualiza persoana nou introdusa.
+</p>
+<p>
+    <strong>Nota: </strong> <br />
+    Nu vei putea introduce 2 persoane cu acelasi email, vei primi un mesaj de eroare!
+</p>
+
+<h3>Index Abonament</h3>
+<p>
+    La Index Abonament poti vedea toate abonamentele create in luna selectata. Implicit cand deschizi pagina este selectata luna curenta,
+    de asemenea poti selecta orice luna doresti pentru a vizualiza abonamentele create in luna respectiva. Dupa selectarea lunii apasa butonul
+    <strong>Afiseaza</strong>.
+</p>
+<p>
+    In acest tabel, campul Stare (Stare Abonament) are culoare rosie daca abonamentul este Finalizat si culoare galbena daca abonamentul este Extins.
+</p>
+<h4>Creare Abonament</h4>
+<p>
+    Aici vei selecta doara Data Start, data de cand este abonamentul valabil, iar abonamentul va fi valabil o luna de zile.
+    Tip Abonament se va selecta un timp de abonament din cele create.
+    Nume Persoana se va putea alege doar o persoana creata. Daca vrei sa faci un abonament la o persoana nou, mai intai trebuie sa
+    adaugi Persoana in baza de date si apoi poti sa ii faci si abonament.
+</p>
+<p><strong>Nota: </strong> Nu poti sa creezi un abonament nou la o persoana care are abonament valabil sau extins, vei primi un mesaj de eroare
+    cu starea abonamentului persoanei respective.
+</p>
+<p><strong>Observatii: </strong>
+<ul>
+    <li>Numarul de sedinte efectuate se va completa automat cu +1 cand veti adauga o persoana la un antrenament</li>
+    <li>Abonamentul is va schimba starea in <strong>Finalizat</strong> cand Data curenta va depasi Data End Abonament sau 
+    numarul de sedinte efectuate va fi egal cu numarul total de sedinte din tip abonament</li>
+    <li>Daca o persoana doreste extinderea abonamentului, aceasta se poate face prin apasarea butonului Edit din dreptul
+    abonamentului respectiv. Se poate modifica Data End la ce data se doreste. Apoi abonamentul va avea Starea Extins</li>
+</ul>
+</p>
+
+<h3>Index Antrenament</h3>
+<p>
+    La fel ca si la Index Abonament poti vedea toate antrenamentele create in luna selectata. Implicit cand deschizi pagina este selectata luna curenta,
+    de asemenea poti selecta orice luna doresti pentru a vizualiza antrenamentele create in luna respectiva. Dupa selectarea lunii apasa butonul
+    <strong>Afiseaza</strong>.
+</p>
+<h4>Creare Antrenament</h4>
+<p>
+    Dupa Crearea Antrenamentului vei fi redirectionat in pagina <strong>Index Zilnic</strong>. Aici se pot vizualiza <strong>
+    toate antrenamentele din ziua respectiva</strong>, implicit e selectata ziua curenta, poti selecta ce zi doresti.
+</p>
+<p>Se pot adauga mai multe antrenamente intr-o zi. Se selecteaza ora la care incep, grupa (1, 2, 3...) cat si daca sunt atrenor personal sau nu.</p>
+<p>
+    In dreptul fiecarui Antrenament exista un buton negru Persoane Antrenament. Prin apasare lui se pot vdedea persoanele de la 
+    antrenamentul respectiv.
+</p>
+<h4>Adaugare Persoane la Antrenament</h4>
+<p>
+    Dupa selectarea antrenamentului, acesta va apare la Antrenament Selectat. De asemenea apare si lista cu persoane inregistrate la antrenament.
+    Apoi in casuta de cautare selecteaza persoana(<strong>Apar doar persoanele care au abonamentul activ sau extins, nu poti
+    adauga o persoane cu abonamentul Finalizat</strong>) pe care doresti sa o adaugi la antrenamentul respectiv. In casuta poti sa 
+    cauti persoanele dupa prenume, apoi cand o selectezi aceasta va fi adaugata la antrenament.<br />
+    Dupa adaugarea persoanei la antrenament, acesteia i se va incrementa la abonament numarul de sedinte efectuate cu +1.
+</p>
+<p>
+    Daca ai adaugat o persoana din greseala la antrenament, poti sa o elimini prin apasarea butonului rosu din dreptul ei
+    <strong>Sterge persoana</strong>. Dupa eliminarea persoanei din atrenament automat i se va sterge si sedinta efectuata din abonament.
+</p>
+
+<h3>Index Tip Abonament</h3>
+<p>
+    Aici poti vizualiza si crea tipuri de antrenament.
+    <strong>Nota: </strong>Nu poti adauga un abonament nou fara a selecta un tip de antrenament!
+</p>
+
+<h3>Instructiuni generale tabele</h3>
+<p>
+    Tabele cu date pentru: Persoane, Abonamente, Antrenamente au urmatoarele facilitati: <br />
+    <ul>
+        <li>
+            La fiecare element se poate Edita, Vedea Detalii, Sterge prin apasarea butoanelor din dreptul lor: 
+            <strong>Edit | Details | Delete</strong>
+        </li>
+        <li>
+            Cauta un element anume in casuta din dreapta sus. Se intrduce textul si se apasa Enter sau click pe Lupa.
+        </li>
+        <li>
+            Sorta crescator/ descrescator pe fiecare coloana
+        </li>
+    </ul>
+</p>
+
+<h3>Instructiuni Utilizator</h3>
+<p>
+    Cand intri in aplicatie trebuie sa te logezi cu un user de Admin prin apasarea butonului Log In. Doar Userii cu rol de Admin
+    pot vedea meniul aplicatiei: App Membri.
+</p>
