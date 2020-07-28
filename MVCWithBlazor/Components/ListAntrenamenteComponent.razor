@@ -69,11 +69,12 @@ else
         protected override void OnInitialized()
         {
             selectieData = DateTime.Now;
-            Afiseaza(DateTime.Now.ToString("MM/dd/yyyy"));
+            Afiseaza(DateTime.Now.ToString("dd/MM/yyyy")); // ToString("MM/dd/yyyy")
         }
         // Afiseaza lista antrenamente din ziua selectata
         private void Afiseaza(string data)
         {
+            Console.WriteLine($"Data Input: {data}");
             SelectedAntrenament = null;
             selectieData = Convert.ToDateTime(data);
             ListaAntrenamente = antrenamentService.GetAntrenamentModelsByDay(selectieData, context).Result;
