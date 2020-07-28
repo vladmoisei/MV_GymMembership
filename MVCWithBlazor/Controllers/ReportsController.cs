@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCWithBlazor.Data;
@@ -10,6 +11,7 @@ using MVCWithBlazor.Services;
 
 namespace MVCWithBlazor.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ReportsController : Controller
     {
         private readonly ReportDbContext _context;

@@ -16,7 +16,7 @@ namespace MVCWithBlazor.Models
         public string Password { get; set; }
         [Required]
         public string Role { get; set; }
-        [Required]
-        public string Department { get; set; }
+        //[Required]
+        //public string Department { get; set; }
     }
 }

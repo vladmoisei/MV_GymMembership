@@ -64,8 +64,10 @@ namespace MVCWithBlazor.Controllers
                         // For mail confirmation
                         //var confirmationLink = Url.ActionLink("ConfirmEmail", "Identity", new { userId = user.Id, @token = token });
                         //await _emailSender.SendEmailAsync("tutorialmicrosoftwebdeveloper@gmail.com", "vladmoisei@yahoo.com", "Confirm your email address", confirmationLink);
-                        var claim = new Claim("Department", model.Department);
-                        await _userManager.AddClaimAsync(user, claim);
+                        
+                        // For Claims, I don't use in this Context
+                        //var claim = new Claim("Department", model.Department);
+                        //await _userManager.AddClaimAsync(user, claim);
                         await _userManager.AddToRoleAsync(user, model.Role);
                         return RedirectToAction("Signin");
                     }
@@ -108,9 +110,9 @@ namespace MVCWithBlazor.Controllers
                     //    ModelState.AddModelError("Claim", "User doesn\'t have claim department");
                     //    return View(model);
                     //}
-                    if (await _userManager.IsInRoleAsync(user, "Member"))
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return RedirectToAction("Member", "Home");
+                        return RedirectToAction("IndexZilnic", "AppAntrenament");
                     }
                 }
                 else
