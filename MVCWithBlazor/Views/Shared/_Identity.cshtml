@@ -6,10 +6,10 @@
 @if (loggedIn)
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="SignOut">Sign out</a>
+        <label class="nav-link text-dark">@User.Identity.Name</label>
     </li>
     <li class="nav-item">
-        <label class="nav-link text-dark">@User.Identity.Name</label>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="SignOut">Sign out</a>
     </li>
     @if (User.IsInRole("Admin"))
     {

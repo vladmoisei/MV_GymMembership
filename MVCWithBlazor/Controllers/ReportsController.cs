@@ -27,6 +27,22 @@ namespace MVCWithBlazor.Controllers
             return View();
         }
 
+        public async Task<IActionResult> RaportLunar()
+        {
+            // Refresh Status for each not Finalised Abonament
+            _antrenamentService.RefreshStatusAbonamentsActive(_context);
+            ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
+            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == DateTime.Now.Year && m.DataStart.Month == DateTime.Now.Month);
+            ViewBag.dataSource = reportDbContext.ToList();
+            return View(await reportDbContext.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RaportLunar(DateTime data)
+        {
+            return View();
+        }
+
         // Index: AppAbonament
         public async Task<IActionResult> IndexAbonament()
         {
