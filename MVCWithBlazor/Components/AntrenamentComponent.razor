@@ -14,8 +14,7 @@
             <p class="font-weight-bolder">@($"Data: {Antrenament.Data.ToString("dd:MM:yyyy")}, Ora: {Antrenament.OraStart.ToString("hh:mm")}, Grupa: {Antrenament.Grupa},PT: { Antrenament.IsPersonalTraining}")</p>
         </div>
     </div>
-    
-    
+
     <div class="col-md-6">
         <p class="text-info">@MesajCB</p>
         <ListCombBoxComponent Mesaj="@MesajCB" ListAbPersoanaViewModel="@ListAbPersoanaViewModel" OnChange="OnChange"></ListCombBoxComponent>
