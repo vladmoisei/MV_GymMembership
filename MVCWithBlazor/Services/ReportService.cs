@@ -47,23 +47,49 @@ namespace MVCWithBlazor.Services
             lista.Add(new ReportAbViewModel { Denumire = "Total" });
             foreach (var item in context.TipAbonamentModels)
             {
-                lista.Add(new ReportAbViewModel { Denumire = item.Denumire});
+                lista.Add(new ReportAbViewModel { Denumire = item.Denumire, TotalBani = 0 }); ;
             }
             return lista;
         }
-
-        // TO DO GET SumaBani
 
         // Get List Of ReportAbViewModel completed with values per month
         public List<ReportAbViewModel> GetListReportAbViewModelsPerMonth(ReportDbContext context, DateTime date)
         {
-            List<ReportAbViewModel> lista = GetListOfReportAbViewModelByTypeAb(context);
-            foreach (var item in lista)
+            List<ReportAbViewModel> listaAbViewModel = GetListOfReportAbViewModelByTypeAb(context);
+            List<AbonamentModel> listaAbonamente = GetAbonamentModelsByMonth(date, context);
+            foreach (var item in listaAbViewModel)
             {
-                item.NrTotalAbonamente = GetAntrenamentModelsByMonth(date, context).Count;
+                if (item.Denumire == "Total")
+                { 
+                    item.NrTotalAbonamente = listaAbonamente.Count;
+                    foreach (var aabt in listaAbonamente)
+                    {
+                        item.TotalBani += aabt.TipAbonament.Pret;
+                    }
+                }
+                else
+                {
+                    foreach (var tipAb in context.TipAbonamentModels)
+                    {
+                        if (item.Denumire == tipAb.Denumire)
+                        {
+                            List<AbonamentModel> listaAbDeUnTip = listaAbonamente.Where(elem => elem.TipAbonament.Denumire == item.Denumire).ToList();
+                            item.NrTotalAbonamente = listaAbDeUnTip.Count;
+                            foreach (var ab in listaAbDeUnTip)
+                            {
+                                item.TotalBani += ab.TipAbonament.Pret;
+                            }
+
+                        }
+                        listaAbViewModel.Add(new ReportAbViewModel { Denumire = item.Denumire });
+                    }
+                }
+
             }
 
-            return lista;
+            return listaAbViewModel;
         }
+
+        // TO DO GET LIST OF ANTRENAMENTE per GRUPA or PT
     }
 }
