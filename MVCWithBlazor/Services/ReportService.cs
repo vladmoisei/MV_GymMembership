@@ -60,7 +60,7 @@ namespace MVCWithBlazor.Services
             foreach (var item in listaAbViewModel)
             {
                 if (item.Denumire == "Total")
-                { 
+                {
                     item.NrTotalAbonamente = listaAbonamente.Count;
                     foreach (var aabt in listaAbonamente)
                     {
@@ -91,5 +91,48 @@ namespace MVCWithBlazor.Services
         }
 
         // TO DO GET LIST OF ANTRENAMENTE per GRUPA or PT
+        // Get List Of ReportAntrViewModel completed with values per month
+        public List<ReportAntrViewModel> GetListReportAntrViewModelsPerMonth(ReportDbContext context, DateTime date)
+        {
+            List<AntrenamentModel> listaTotalAntr = GetAntrenamentModelsByMonth(date, context);
+            List<AntrenamentModel> listaTotalAntrGr = GetAntrenamentModelsByMonth(date, context).Where(e => !e.IsPersonalTraining).ToList();
+            List<AntrenamentModel> listaTotalAntrPT = GetAntrenamentModelsByMonth(date, context).Where(e => e.IsPersonalTraining).ToList();
+
+            double mediePersTotalAntr = 0;
+            double mediePersTotalAntrGr = 0;
+            double mediePersTotalAntrPT = 0;
+
+            foreach (var antrenament in listaTotalAntr)
+            {
+                mediePersTotalAntr += antrenament.ListaPersoane.Count;
+                if (!antrenament.IsPersonalTraining)
+                {
+                    mediePersTotalAntrGr += antrenament.ListaPersoane.Count;
+                }
+                else mediePersTotalAntrPT += antrenament.ListaPersoane.Count;
+            }
+
+            if (listaTotalAntr.Count > 0)
+            {
+                mediePersTotalAntr /= listaTotalAntr.Count;
+            }
+
+            if (listaTotalAntrGr.Count > 0)
+            {
+                mediePersTotalAntrGr /= listaTotalAntrGr.Count;
+            }
+
+            if (listaTotalAntrPT.Count > 0)
+            {
+                mediePersTotalAntrPT /= listaTotalAntrPT.Count;
+            }
+
+            return new List<ReportAntrViewModel>
+            {
+                new ReportAntrViewModel { Denumire = "Total Antrenamente", NrTotalAntrenamente = listaTotalAntr.Count, MediePersPerAntr = mediePersTotalAntr },
+                new ReportAntrViewModel { Denumire = "Total Antrenamente Grupa", NrTotalAntrenamente = listaTotalAntrGr.Count, MediePersPerAntr = mediePersTotalAntrGr },
+                new ReportAntrViewModel { Denumire = "Total Antrenamente PT", NrTotalAntrenamente = listaTotalAntrPT.Count, MediePersPerAntr = mediePersTotalAntrPT }
+            };
+        }
     }
 }

@@ -12,6 +12,6 @@ namespace MVCWithBlazor.Models
         [Display(Name = "Nr Total Antrenamente")]
         public int NrTotalAntrenamente { get; set; }
         [Display(Name = "Medie Persoane / Antrenament")]
-        public int MediePersPerAntr { get; set; }
+        public double MediePersPerAntr { get; set; }
     }
 }
