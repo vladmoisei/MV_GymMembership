@@ -10,10 +10,34 @@ namespace MVCWithBlazor.Services
 {
     public class ReportService
     {
+        //Get List Of Person per Antrenament
+        public List<PersoanaModel> GetListOfPersonByAntrenament(AntrenamentModel antrenament, ReportDbContext context)
+        {
+            List<PersoanaModel> listaPersoanePerAntrenament = new List<PersoanaModel>();
+
+            var persoaneGasite = context.PersAntrAbTables.Where(p => p.AntrenamentModelID == antrenament.AntrenamentModelID).Include(o => o.Persoana).ToList();
+
+            if (persoaneGasite != null)
+            {
+                foreach (var item in persoaneGasite)
+                {
+                    listaPersoanePerAntrenament.Add(item.Persoana);
+                }
+            }
+
+            return listaPersoanePerAntrenament;
+        }
+
         // Get Antrenament By Month from Antrenament DB
         public List<AntrenamentModel> GetAntrenamentModelsByMonth(DateTime date, ReportDbContext context)
         {
             List<AntrenamentModel> listaAntrenamnete = context.AntrenamentModels.Where(m => m.Data.Year == date.Year && m.Data.Month == date.Month).ToList();
+
+            // Get List of Person By Antrenament
+            foreach (var antrenament in listaAntrenamnete)
+            {
+                antrenament.ListaPersoane = GetListOfPersonByAntrenament(antrenament, context);
+            }
             return listaAntrenamnete;
         }
 
@@ -57,6 +81,7 @@ namespace MVCWithBlazor.Services
         {
             List<ReportAbViewModel> listaAbViewModel = GetListOfReportAbViewModelByTypeAb(context);
             List<AbonamentModel> listaAbonamente = GetAbonamentModelsByMonth(date, context);
+
             foreach (var item in listaAbViewModel)
             {
                 if (item.Denumire == "Total")
@@ -81,7 +106,7 @@ namespace MVCWithBlazor.Services
                             }
 
                         }
-                        listaAbViewModel.Add(new ReportAbViewModel { Denumire = item.Denumire });
+                        //listaAbViewModel.Add(new ReportAbViewModel { Denumire = item.Denumire });
                     }
                 }
 
@@ -104,12 +129,15 @@ namespace MVCWithBlazor.Services
 
             foreach (var antrenament in listaTotalAntr)
             {
-                mediePersTotalAntr += antrenament.ListaPersoane.Count;
-                if (!antrenament.IsPersonalTraining)
+                if (antrenament.ListaPersoane != null && antrenament.ListaPersoane.Count > 0)
                 {
-                    mediePersTotalAntrGr += antrenament.ListaPersoane.Count;
+                    mediePersTotalAntr += antrenament.ListaPersoane.Count;
+                    if (!antrenament.IsPersonalTraining)
+                    {
+                        mediePersTotalAntrGr += antrenament.ListaPersoane.Count;
+                    }
+                    else mediePersTotalAntrPT += antrenament.ListaPersoane.Count;
                 }
-                else mediePersTotalAntrPT += antrenament.ListaPersoane.Count;
             }
 
             if (listaTotalAntr.Count > 0)

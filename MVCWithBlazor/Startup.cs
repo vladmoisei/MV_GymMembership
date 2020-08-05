@@ -72,6 +72,7 @@ namespace MVCWithBlazor
             });
             services.AddControllersWithViews(); // Add MVC
             services.AddSingleton<AntrenamentService>();
+            services.AddSingleton<ReportService>();
             services.AddSyncfusionBlazor(); // Add Syncfusion Blazor
         }
 

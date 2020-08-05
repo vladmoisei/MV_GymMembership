@@ -16,11 +16,13 @@ namespace MVCWithBlazor.Controllers
     {
         private readonly ReportDbContext _context;
         private readonly AntrenamentService _antrenamentService;
+        private readonly ReportService _reportService;
 
-        public ReportsController(ReportDbContext context, AntrenamentService antrenamentService)
+        public ReportsController(ReportDbContext context, AntrenamentService antrenamentService, ReportService reportService)
         {
             _context = context;
             _antrenamentService = antrenamentService;
+            _reportService = reportService;
         }
         public IActionResult Index()
         {
@@ -31,16 +33,24 @@ namespace MVCWithBlazor.Controllers
         {
             // Refresh Status for each not Finalised Abonament
             _antrenamentService.RefreshStatusAbonamentsActive(_context);
+
             ViewBag.DataStart = DateTime.Now.ToString("yyyy-MM");
-            var reportDbContext = _context.AbonamentModels.Include(t => t.TipAbonament).Include(a => a.PersoanaModel).Where(m => m.DataStart.Year == DateTime.Now.Year && m.DataStart.Month == DateTime.Now.Month);
-            ViewBag.dataSource = reportDbContext.ToList();
-            return View(await reportDbContext.ToListAsync());
+
+            ReportViewModel reportViewModel = new ReportViewModel();
+            reportViewModel.ListaAbonamente = _reportService.GetListReportAbViewModelsPerMonth(_context, DateTime.Now);
+            reportViewModel.ListaAntrenamente = _reportService.GetListReportAntrViewModelsPerMonth(_context, DateTime.Now);
+
+            return View(reportViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> RaportLunar(DateTime data)
+        public async Task<IActionResult> RaportLunar(DateTime startMonth)
         {
-            return View();
+            ViewBag.DataStart = startMonth.ToString("yyyy-MM");
+            ReportViewModel reportViewModel = new ReportViewModel();
+            reportViewModel.ListaAbonamente = _reportService.GetListReportAbViewModelsPerMonth(_context, startMonth);
+            reportViewModel.ListaAntrenamente = _reportService.GetListReportAntrViewModelsPerMonth(_context, startMonth);
+            return View(reportViewModel);
         }
 
         // Index: AppAbonament
