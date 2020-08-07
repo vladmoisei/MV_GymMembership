@@ -1,0 +1,98 @@
+﻿@model MVCWithBlazor.Models.ReportViewModel
+@{
+    ViewData["Title"] = "Raport Anual";
+}
+
+<h1>Raport Anual</h1>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline" asp-action="RaportAnual">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group col-md-5">
+                <label class="control-label m-md-2">Selectie luna raport:</label>
+                <input class="form-control" type="month" id="startMonth" name="startMonth"
+                       min="2018-01" value=@ViewBag.DataStart>
+            </div>
+            @*<div class="form-group col-md-5">
+                    <label class="control-label m-md-2">Selectie stare abonament:</label>
+                    <select class="form-control" id="stareAb" name="stareAb" asp-items="Html.GetEnumSelectList<HelperStareAbonament>()">
+                    </select>
+                </div>*@
+            <div class="form-group col-md-2">
+                <input type="submit" value="Afiseaza" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<h3>Abonamente</h3>
+@*Status Abonamente*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAbonamente.FirstOrDefault().Denumire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAbonamente.FirstOrDefault().NrTotalAbonamente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAbonamente.FirstOrDefault().TotalBani)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListaAbonamente)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Denumire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrTotalAbonamente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalBani)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Antrenamente</h3>
+@*Status Antrenamente*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAntrenamente.FirstOrDefault().Denumire)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAntrenamente.FirstOrDefault().NrTotalAntrenamente)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ListaAntrenamente.FirstOrDefault().MediePersPerAntr)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ListaAntrenamente)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Denumire)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrTotalAntrenamente)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MediePersPerAntr)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
