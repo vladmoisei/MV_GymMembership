@@ -12,6 +12,7 @@ namespace MVCWithBlazor.Models
         [Display(Name = "Nr Total Antrenamente")]
         public int NrTotalAntrenamente { get; set; }
         [Display(Name = "Medie Persoane / Antrenament")]
+        [DisplayFormat(DataFormatString = "{0:##.#}", ApplyFormatInEditMode = false)]
         public double MediePersPerAntr { get; set; }
     }
 }

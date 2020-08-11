@@ -61,6 +61,11 @@ namespace MVCWithBlazor.Services
         public List<AntrenamentModel> GetAntrenamentModelsByYear(DateTime date, ReportDbContext context)
         {
             List<AntrenamentModel> listaAntrenamnete = context.AntrenamentModels.Where(m => m.Data.Year == date.Year).ToList();
+            // Get List of Person By Antrenament
+            foreach (var antrenament in listaAntrenamnete)
+            {
+                antrenament.ListaPersoane = GetListOfPersonByAntrenament(antrenament, context);
+            }
             return listaAntrenamnete;
         }
 
