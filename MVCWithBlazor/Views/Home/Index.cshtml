@@ -3,6 +3,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+    <component type="typeof(ContainerComponent)" render-mode="ServerPrerendered" />
+
+
+
     <div class="text-center">
         <h1 class="display-4">Welcome to ASP.NET Core Identity Management </h1>
         <div class="alert ">
@@ -17,3 +21,12 @@
         <component type="typeof(ContainerComponent)" render-mode="ServerPrerendered" />
         @*<ContainerComponent>Html Tag</ContainerComponent>*@
     </div>
+
+@section Scripts {
+<script>
+    // Add Class Container Fluid To Index page
+    var container = document.getElementById("container");
+    container.classList.remove("container");
+    container.classList.add("container-fluid");
+</script>
+}
