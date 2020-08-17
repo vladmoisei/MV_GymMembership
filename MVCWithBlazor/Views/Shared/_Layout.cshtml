@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="POT, IMI DORESC, SUNT - Termeni dupa care ne ghidam in box pentru a deveni adevarati CAMPIONI !" />
     <meta name="keywords" content="box, calarasi, academia de box, box calarasi, boxcalarasi" />
+    <meta name="author" content="Vlad Moisei">
     <title>@ViewData["Title"] - Brohers Boxing Gym</title>
     <base href="/" /> @*For Blazor*@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -32,9 +33,9 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="DespreNoi">Despre Noi</a>
-                        </li>
+                        </li>*@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">
@@ -42,6 +43,7 @@
                                     App Membri
                                 </a>
                                 <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Home" asp-action="AppInstructiuni">App Instructiuni</a>
                                     <a class="dropdown-item" asp-controller="AppPersoana" asp-action="Index">Index Persoana</a>
                                     <a class="dropdown-item" asp-controller="AppAbonament" asp-action="Index">Index Abonament</a>
                                     <a class="dropdown-item" href="AppAntrenament/Index">Index Antrenament</a>
@@ -49,9 +51,6 @@
                                     <a class="dropdown-item" href="AppAntrenament/IndexZilnic">Antrenament Zilnic</a>
                                     <a class="dropdown-item" asp-controller="Reports" asp-action="Index">Rapoarte</a>
                                 </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AppInstructiuni">App Instructiuni</a>
                             </li>
                         }
                         @*<li class="nav-item">

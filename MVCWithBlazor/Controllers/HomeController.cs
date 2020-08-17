@@ -30,7 +30,7 @@ namespace MVCWithBlazor.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View("Index");
         }
         [Authorize(Roles = "Member, Admin")]
         [Authorize(Policy = "Dep")]

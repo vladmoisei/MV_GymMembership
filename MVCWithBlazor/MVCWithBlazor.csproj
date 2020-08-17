@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\datatable\" />
-    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
   <ItemGroup>
