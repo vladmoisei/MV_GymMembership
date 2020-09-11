@@ -105,7 +105,7 @@ namespace MVCWithBlazor.Controllers
             if (ModelState.IsValid)
             {
                 TipAbonamentModel tipAb = _context.TipAbonamentModels.FirstOrDefault(a => a.TipAbonamentModelID == abonamentModel.TipAbonamentModelID);
-                abonamentModel.DataStop = new DateTime(abonamentModel.DataStart.Year, abonamentModel.DataStart.Month + 1, abonamentModel.DataStart.Day);
+                abonamentModel.DataStop = abonamentModel.DataStart.AddDays(31);
                 abonamentModel.StareAbonament = StareAbonament.Activ;
                 abonamentModel.NrSedinteEfectuate = 0;
                 if (tipAb.NrTotalSedinte == 1) // Daca facem 1 abonament cu o singura sedinta il incheiem pe loc, nu mai e nevoie
