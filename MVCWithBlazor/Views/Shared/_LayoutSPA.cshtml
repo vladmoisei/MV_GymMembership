@@ -6,20 +6,20 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="POT, IMI DORESC, SUNT - Termeni dupa care ne ghidam in box pentru a deveni adevarati CAMPIONI !" />
-    <meta name="keywords" content="box, calarasi, academia de box, box calarasi, boxcalarasi" />
+    <meta name="keywords" content="box, calarasi, academia de box, box calarasi, boxcalarasi, brohers boxing gym" />
     <meta name="author" content="Vlad Moisei">
 
     <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
-    <meta property="og:site_name" content="" /> <!-- website name -->
-    <meta property="og:site" content="" /> <!-- website link -->
-    <meta property="og:title" content="Academia de Box Calarasi" /> <!-- title shown in the actual shared post -->
-    <meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
-    <meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+    <meta property="og:site_name" content="Brohers Boxing Gym" /> <!-- website name -->
+    <meta property="og:site" content="www.brothersboxinggym.com" /> <!-- website link -->
+    <meta property="og:title" content="Brohers Boxing Gym" /> <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="POT, IMI DORESC, SUNT - Termeni dupa care ne ghidam in box pentru a deveni adevarati CAMPIONI !" /> <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="~/img/Logobox.jpg" /> <!-- image link, make sure it's jpg -->
     <meta property="og:url" content="" /> <!-- where do you want your post to link to -->
     <meta property="og:type" content="article" />
 
     <!-- Website Title -->
-    <title>Academia de Box Calarasi</title>
+    <title>Brohers Boxing Gym</title>
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
@@ -49,7 +49,9 @@
         <!-- Text Logo - Use this if you don't have a graphic logo -->
         <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Leno</a> -->
         <!-- Image Logo -->
-        <a class="navbar-brand logo-image rounded" href="home/index"><img style="width: 80px" src="~/img/Logobox.jpg" alt="Academia De Box"></a>
+        <a class="navbar-brand logo-image rounded" href="#header">
+            <img class="rounded" style="width: 70px" src="~/img/Logobox_small.jpg" alt="Academia De Box">
+        </a>
 
         <!-- Mobile Menu Toggle Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,11 +65,12 @@
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <ul class="navbar-nav flex-grow-1">
-                            @if (User.IsInRole("Admin"))
-                            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <div @*class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"*@>
+                            <ul class="navbar-nav flex-grow-1">
+
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                                         App Membri
@@ -76,47 +79,47 @@
                                         <a class="dropdown-item" asp-controller="Home" asp-action="AppInstructiuni">App Instructiuni</a>
                                         <a class="dropdown-item" asp-controller="AppPersoana" asp-action="Index">Index Persoana</a>
                                         <a class="dropdown-item" asp-controller="AppAbonament" asp-action="Index">Index Abonament</a>
-                                        <a class="dropdown-item" href="AppAntrenament/Index">Index Antrenament</a>
+                                        <a class="dropdown-item" asp-controller="AppAntrenament" asp-action="Index">Index Antrenament</a>
                                         <a class="dropdown-item" asp-controller="AppTipAbonament" asp-action="Index">Index Tip Abonament</a>
-                                        <a class="dropdown-item" href="AppAntrenament/IndexZilnic">Antrenament Zilnic</a>
+                                        <a class="dropdown-item" asp-controller="AppAntrenament" asp-action="IndexZilnic">Antrenament Zilnic</a>
                                         <a class="dropdown-item" asp-controller="Reports" asp-action="Index">Rapoarte</a>
                                     </div>
                                 </li>
-                            }
-                        </ul>
-                    </div>
-                </li>
-                @*<li class="nav-item">
-            <a class="nav-link page-scroll" href="#features">FEATURES</a>
-        </li>*@
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#preview">ANTRENAMENT</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#details">SALA</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#abonament">TIP ABONAMENT</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#orar">ORAR</a>
-                </li>
-                <!-- Dropdown Menu -->
-                @*<li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">DETAILS</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="terms-conditions.html"><span class="item-text">TERMS CONDITIONS</span></a>
-                <div class="dropdown-items-divide-hr"></div>
-                <a class="dropdown-item" href="privacy-policy.html"><span class="item-text">PRIVACY POLICY</span></a>
-              </div>
-        </li>*@
-                <!-- end of dropdown menu -->
+                            </ul>
+                        </div>
+                    </li>
+                }
+                    @*<li class="nav-item">
+                <a class="nav-link page-scroll" href="#features">FEATURES</a>
+            </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#preview">ANTRENAMENT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#details">SALA</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#abonament">TIP ABONAMENT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#orar">ORAR</a>
+                    </li>
+                    <!-- Dropdown Menu -->
+                    @*<li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle page-scroll" href="#details" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">DETAILS</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="terms-conditions.html"><span class="item-text">TERMS CONDITIONS</span></a>
+                    <div class="dropdown-items-divide-hr"></div>
+                    <a class="dropdown-item" href="privacy-policy.html"><span class="item-text">PRIVACY POLICY</span></a>
+                  </div>
+            </li>*@
+                    <!-- end of dropdown menu -->
 
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#contact">CONTACT</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+                    </li>
 
-            </ul>
+                </ul>
             <span class="nav-item social-icons">
                 <span class="fa-stack">
                     <a href="https://www.facebook.com/box.calarasi">
@@ -154,7 +157,7 @@
                     </div> <!-- end of col -->
                     <div class="col-lg-6">
                         <div class="image-container">
-                            <img class="img-fluid" src="~/img/box5a.jpg" alt="alternative">
+                            <img class="img-fluid" src="~/img/box5a_mdium.jpg" alt="alternative">
                         </div> <!-- end of image-container -->
                     </div> <!-- end of col -->
                 </div> <!-- end of row -->
@@ -176,7 +179,7 @@
                                 <!-- Slide -->
                                 <div class="swiper-slide">
                                     <div class="card">
-                                        <img class="card-image" src="~/img/spa/testimonial-1.jpg" alt="alternative">
+                                        <img class="card-image" src="~/img/spa/testimonial-1_small.jpg" alt="alternative">
                                         <div class="card-body">
                                             <p class="testimonial-text">Ma ajuta sa imi depasesc limitele si imi ofera o stare de bine la sfarsitul antrenamentului.</p>
                                             <p class="testimonial-author">Vlad - Inginer</p>
@@ -187,7 +190,7 @@
                                 <!-- Slide -->
                                 <div class="swiper-slide">
                                     <div class="card">
-                                        <img class="card-image" src="~/img/spa/testimonial-2.jpg" alt="alternative">
+                                        <img class="card-image" src="~/img/spa/testimonial-2_small.jpg" alt="alternative">
                                         <div class="card-body">
                                             <p class="testimonial-text">
                                                 Brothers Boxing Gym este mai mult decat o sala de sport, imi ofera posibilitatea de a imi incarca bateriile mentale,
@@ -226,7 +229,7 @@
                                         <img class="card-image" src="~/img/spa/testimonial-5.jpg" alt="alternative">
                                         <div class="card-body">
                                             <p class="testimonial-text">Antrenamentul de box m-a ajutat mult la cresterea increderii in sine!</p>
-                                            <p class="testimonial-author">Gelu - Elev</p>
+                                            <p class="testimonial-author">Irina - Eleva</p>
                                         </div>
                                     </div>
                                 </div> <!-- end of swiper-slide -->
@@ -258,253 +261,7 @@
         </div> <!-- end of container -->
     </div> <!-- end of slider-1 -->
     <!-- end of testimonials -->
-    <!-- Features -->
-    <div id="features" class="tabs d-none">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>FEATURES</h2>
-                    <div class="p-heading p-large">Leno was designed based on input from personal development coaches and popular trainers so it offers all</div>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row">
-
-                <!-- Tabs Links -->
-                <ul class="nav nav-tabs" id="lenoTabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="nav-tab-1" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true"><i class="fas fa-cog"></i>CONFIGURING</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="nav-tab-2" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false"><i class="fas fa-binoculars"></i>TRACKING</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="nav-tab-3" data-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false"><i class="fas fa-search"></i>MONITORING</a>
-                    </li>
-                </ul>
-                <!-- end of tabs links -->
-                <!-- Tabs Content-->
-                <div class="tab-content" id="lenoTabsContent">
-
-                    <!-- Tab -->
-                    <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1">
-                        <div class="container">
-                            <div class="row">
-
-                                <!-- Icon Cards Pane -->
-                                <div class="col-lg-4">
-                                    <div class="card left-pane first">
-                                        <div class="card-body">
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Goal Setting</h4>
-                                                <p>Like any self improving process, everything starts with setting your goals and committing to them</p>
-                                            </div>
-                                            <div class="card-icon">
-                                                <i class="far fa-compass"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card left-pane">
-                                        <div class="card-body">
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Visual Editor</h4>
-                                                <p>Leno provides a well designed and ergonomic visual editor for you to edit your notes and input data</p>
-                                            </div>
-                                            <div class="card-icon">
-                                                <i class="far fa-file-code"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card left-pane">
-                                        <div class="card-body">
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Refined Options</h4>
-                                                <p>Each option packaged in the app's menus is provided in order to improve your personal development status</p>
-                                            </div>
-                                            <div class="card-icon">
-                                                <i class="far fa-gem"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end of icon cards pane -->
-                                <!-- Image Pane -->
-                                <div class="col-lg-4">
-                                    <img class="img-fluid" src="~/img/spa/features-iphone-1.png" alt="alternative">
-                                </div>
-                                <!-- end of image pane -->
-                                <!-- Icon Cards Pane -->
-                                <div class="col-lg-4">
-                                    <div class="card right-pane first">
-                                        <div class="card-body">
-                                            <div class="card-icon">
-                                                <i class="far fa-calendar-check"></i>
-                                            </div>
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Calendar Input</h4>
-                                                <p>Schedule your appointments, meetings and periodical evaluations using the provided in-app calendar option</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card right-pane">
-                                        <div class="card-body">
-                                            <div class="card-icon">
-                                                <i class="far fa-bookmark"></i>
-                                            </div>
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Easy Reading</h4>
-                                                <p>Reading focus mode for long form articles, ebooks and other materials which involve large text areas</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card right-pane">
-                                        <div class="card-body">
-                                            <div class="card-icon">
-                                                <i class="fas fa-cube"></i>
-                                            </div>
-                                            <div class="text-wrapper">
-                                                <h4 class="card-title">Good Foundation</h4>
-                                                <p>Get a solid foundation for your self development efforts. Try Leno mobile app for any mobile platform</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end of icon cards pane -->
-
-                            </div> <!-- end of row -->
-                        </div> <!-- end of container -->
-                    </div> <!-- end of tab-pane -->
-                    <!-- end of tab -->
-                    <!-- Tab -->
-                    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="tab-2">
-                        <div class="container">
-                            <div class="row">
-
-                                <!-- Image Pane -->
-                                <div class="col-md-4">
-                                    <img class="img-fluid" src="~/img/spa/features-iphone-2.png" alt="alternative">
-                                </div>
-                                <!-- end of image pane -->
-                                <!-- Text And Icon Cards Area -->
-                                <div class="col-md-8">
-                                    <div class="text-area">
-                                        <h3>Track Result Based On Your</h3>
-                                        <p>After you've configured the app and settled on the data gathering techniques you can not start the information trackers and start collecting those <a class="turquoise" href="#your-link">interesting details</a>. You can always change them.</p>
-                                    </div> <!-- end of text-area -->
-
-                                    <div class="icon-cards-area">
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="fas fa-cube"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Good Foundation</h4>
-                                                <p>Get a solid foundation for your self development efforts. Try Leno mobile app for any mobile platform</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-bookmark"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Easy Reading</h4>
-                                                <p>Reading focus mode for long form articles, ebooks and other materials which involve large text areas</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-calendar-check"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Calendar Input</h4>
-                                                <p>Schedule your appointments, meetings and periodical evaluations using the provided in-app calendar option</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-file-code"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Visual Editor</h4>
-                                                <p>Leno provides a well designed and ergonomic visual editor for you to edit your notes and input data</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end of icon cards area -->
-                                </div> <!-- end of col-md-8 -->
-                                <!-- end of text and icon cards area -->
-
-                            </div> <!-- end of row -->
-                        </div> <!-- end of container -->
-                    </div> <!-- end of tab-pane -->
-                    <!-- end of tab -->
-                    <!-- Tab -->
-                    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="tab-3">
-                        <div class="container">
-                            <div class="row">
-
-                                <!-- Text And Icon Cards Area -->
-                                <div class="col-md-8">
-                                    <div class="icon-cards-area">
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-calendar-check"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Calendar Input</h4>
-                                                <p>Schedule your appointments, meetings and periodical evaluations using the provided in-app calendar option</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-file-code"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Visual Editor</h4>
-                                                <p>Leno provides a well designed and ergonomic visual editor for you to edit your notes and input data</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="fas fa-cube"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Good Foundation</h4>
-                                                <p>Get a solid foundation for your self development efforts. Try Leno mobile app for any mobile platform</p>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-icon">
-                                                <i class="far fa-bookmark"></i>
-                                            </div>
-                                            <div class="card-body">
-                                                <h4 class="card-title">Easy Reading</h4>
-                                                <p>Reading focus mode for long form articles, ebooks and other materials which involve large text areas</p>
-                                            </div>
-                                        </div>
-                                    </div> <!-- end of icon cards area -->
-
-                                    <div class="text-area">
-                                        <h3>Monitoring Tools Evaluation</h3>
-                                        <p>Monitor the evolution of your finances and health state using tools integrated in Leno. The generated real time reports can be filtered based on any <a class="turquoise" href="#your-link">desired criteria</a>.</p>
-                                    </div> <!-- end of text-area -->
-                                </div> <!-- end of col-md-8 -->
-                                <!-- end of text and icon cards area -->
-                                <!-- Image Pane -->
-                                <div class="col-md-4">
-                                    <img class="img-fluid" src="~/img/spa/features-iphone-3.png" alt="alternative">
-                                </div>
-                                <!-- end of image pane -->
-
-                            </div> <!-- end of row -->
-                        </div> <!-- end of container -->
-                    </div><!-- end of tab-pane -->
-                    <!-- end of tab -->
-
-                </div> <!-- end of tab-content -->
-                <!-- end of tabs content -->
-
-            </div> <!-- end of row -->
-        </div> <!-- end of container -->
-    </div> <!-- end of tabs -->
+    
     <!-- end of features -->
     <!-- Video -->
     <div id="preview" class="basic-1">
@@ -545,7 +302,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <img class="img-fluid" src="~/img/salBox1.jpg" alt="alternative">
+                    <img class="img-fluid" src="~/img/salBox1_small.jpg" alt="alternative">
                 </div> <!-- end of col -->
                 <div class="col-lg-6">
                     <div class="text-container">
@@ -578,7 +335,7 @@
                         </div> <!-- end of text-container -->
                     </div> <!-- end of col -->
                     <div class="col-lg-6">
-                        <img class="img-fluid" src="~/img/salabox2.jpg" alt="alternative">
+                        <img class="img-fluid" src="~/img/salabox2_mdium.jpg" alt="alternative">
                     </div> <!-- end of col -->
                 </div> <!-- end of row -->
             </div> <!-- end of container -->
@@ -666,7 +423,7 @@
                     <div class="text-container">
                         <h2>Abonament <span class="text-primary"> personal training</span></h2>
                         <p class="p-large">
-                            8 sedinte pe luna. Maxim 3 persoane per antrnament.
+                            8 sedinte pe luna. Maxim 3 persoane per antrenament.
                         </p>
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
@@ -797,7 +554,7 @@
                 </div> <!-- end of col -->
                 <div class="col-lg-9 col-xl-9">
                     <div class="image-container">
-                        <img class="img-fluid" src="~/img/orarAntrenament.jpg" alt="alternative">
+                        <img class="img-fluid" src="~/img/orarAntrenament_small.jpg" alt="alternative">
                     </div> <!-- end of img-container -->
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -811,6 +568,7 @@
                 <div class="col-lg-12">
                     <div class="image-container">
                         <img class="img-fluid" src="~/img/GymBrothersImg.jpg" alt="Fratii Ursu" />
+
                     </div>
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
@@ -819,20 +577,20 @@
                     <!-- Counter -->
                     <div id="counter">
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="3">1</div>
-                            <p class="counter-info">Titluri nationale ca boxeor</p>
+                            <div class="counter-value number-count" data-count="10">1</div>
+                            <p class="counter-info">Ani consecutivi cu cel putin 1 campion national</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="25">1</div>
-                            <p class="counter-info">Titluri nationale ca antrenor</p>
+                            <div class="counter-value number-count" data-count="36">1</div>
+                            <p class="counter-info">Titluri de campioni nationali</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="11">1</div>
-                            <p class="counter-info">Medalii la olimpiada</p>
+                            <div class="counter-value number-count" data-count="100">1</div>
+                            <p class="counter-info">Medalii aur, argint si bronz</p>
                         </div>
                         <div class="cell">
-                            <div class="counter-value number-count" data-count="127">1</div>
-                            <p class="counter-info">Clienti multumiti</p>
+                            <div class="counter-value number-count" data-count="22">1</div>
+                            <p class="counter-info">Participari la Campionate Europene sau Mondiale</p>
                         </div>
                     </div>
                     <!-- end of counter -->
@@ -857,41 +615,6 @@
                         <li><i class="fas fa-phone"></i><a class="blue" href="tel:0040724947384">0724 947 384</a></li>
                         <li><i class="fas fa-envelope"></i><a class="blue" href="mailto:george_ursu23@yahoo.com">george_ursu23@yahoo.com</a></li>
                     </ul>
-                </div> <!-- end of col -->
-            </div> <!-- end of row -->
-            <div class="row d-none">
-                <div class="col-lg-6 offset-lg-3">
-
-                    <!-- Contact Form -->
-                    <form id="contactForm" data-toggle="validator" data-focus="false">
-                        <div class="form-group">
-                            <input type="text" class="form-control-input" id="cname" required>
-                            <label class="label-control" for="cname">Name</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control-input" id="cemail" required>
-                            <label class="label-control" for="cemail">Email</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control-textarea" id="cmessage" required></textarea>
-                            <label class="label-control" for="cmessage">Your message</label>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group checkbox">
-                            <input type="checkbox" id="cterms" value="Agreed-to-Terms" required>I have read and agree to Leno's stated conditions in <a href="privacy-policy.html">Privacy Policy</a> and <a href="terms-conditions.html">Terms Conditions</a>
-                            <div class="help-block with-errors"></div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="form-control-submit-button">SUBMIT MESSAGE</button>
-                        </div>
-                        <div class="form-message">
-                            <div id="cmsgSubmit" class="h3 text-center hidden"></div>
-                        </div>
-                    </form>
-                    <!-- end of contact form -->
-
                 </div> <!-- end of col -->
             </div> <!-- end of row -->
         </div> <!-- end of container -->
@@ -953,7 +676,7 @@
         <div class="con48/ner">
             <div class="row">
                 <div class="col-lg-12">
-                    <p class="p-small">Copyright © 2020 <a href="https://vladmoisei.com">Vlad Moisei</a> - All rights reserved</p>
+                    <p class="p-small">Copyright © 2020 <a href="https://vladmoisei.github.io/Resume/#home">Vlad Moisei</a> - All rights reserved</p>
                 </div> <!-- end of col -->
             </div> <!-- enf of row -->
         </div> <!-- end of container -->

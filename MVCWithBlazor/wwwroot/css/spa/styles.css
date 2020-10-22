@@ -761,7 +761,7 @@ input[type='checkbox'] {
 /*    04. Header     */
 /*********************/
 .header {
-	background: linear-gradient(to bottom right, rgba(72, 72, 212, 0), rgba(241, 104, 104, 0)), url('../../img/spa/header-background.jpg') center center no-repeat;
+	background: #100e17; /*linear-gradient(to bottom right, rgba(72, 72, 212, 0), rgba(241, 104, 104, 0)), url('../../img/spa/header-background.jpg') center center no-repeat;*/
 	background-size: cover;
 }
 
@@ -1007,7 +1007,7 @@ input[type='checkbox'] {
 .basic-1 {
 	padding-top: 6.375rem;
 	padding-bottom: 6.875rem;
-	background: url('../../img/spa/video-background.jpg') center center no-repeat;
+	background: #100e17; /*url('../../img/spa/video-background.jpg') center center no-repeat;*/
 	background-size: cover;
 }
 
@@ -1279,7 +1279,7 @@ input[type='checkbox'] {
 .basic-4 {
 	padding-top: 6.5rem;
 	padding-bottom: 6.75rem;
-	background: url('../../img/spa/download-background.jpg') center center no-repeat;
+	background: #100e17; /*url('../../img/spa/download-background.jpg') center center no-repeat;*/
 	background-size: cover;
 }
 

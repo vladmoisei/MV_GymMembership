@@ -6,21 +6,21 @@
 @if (loggedIn)
 {
     <li class="nav-item">
-        <label class="nav-link text-dark">@User.Identity.Name</label>
+        <label class="nav-link text-white-50">@User.Identity.Name</label>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="SignOut">Sign out</a>
+        <a class="nav-link text-primary" asp-area="" asp-controller="Identity" asp-action="SignOut">Sign out</a>
     </li>
     @if (User.IsInRole("Admin"))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="SignUp">Sign Up</a>
+            <a class="nav-link text-primary" asp-area="" asp-controller="Identity" asp-action="SignUp">Sign Up</a>
         </li>
     }
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="SignIn">Log In</a>
+        <a class="nav-link text-primary" asp-area="" asp-controller="Identity" asp-action="SignIn">Log In</a>
     </li>
 }
